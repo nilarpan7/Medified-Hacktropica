@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Redirect to appropriate dashboard
                 if (user.userType === 'patient') {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'patient-dashboard.html';
                 } else if (user.userType === 'doctor') {
                     window.location.href = 'doctor-dashboard.html';
                 }

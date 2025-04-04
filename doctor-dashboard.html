@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard | MedConnect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-heartbeat"></i> <span>MedConnect</span></h2>
+            </div>
+            <div class="user-info">
+                <div class="avatar user-initials">DS</div>
+                <h3 class="user-name">Dr. Smith</h3>
+                <p class="user-specialization">Cardiologist</p>
+            </div>
+            <nav class="sidebar-menu">
+                <div class="menu-item active" id="dashboard-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item" id="appointments-link">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Appointments</span>
+                </div>
+                <div class="menu-item" id="patients-link">
+                    <i class="fas fa-users"></i>
+                    <span>Patients</span>
+                </div>
+                <div class="menu-item" id="video-call-link">
+                    <i class="fas fa-video"></i>
+                    <span>Video Calls</span>
+                </div>
+                <div class="menu-item" id="profile-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </div>
+            </nav>
+            <div class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="top-bar-actions">
+                    <button class="notification-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">2</span>
+                    </button>
+                    <!-- Notification Dropdown -->
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h3>Notifications</h3>
+                        </div>
+                        <div class="notification-content" id="notificationContent">
+                            <!-- Notifications will be loaded here by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="user-dropdown">
+                        <div class="avatar user-initials">DS</div>
+                        <span class="user-name">Dr. Smith</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <h1>Doctor Dashboard</h1>
+                
+                <!-- Dashboard Cards -->
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Appointments</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="appointmentCount">0</div>
+                        <div class="card-label">Total</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Upcoming</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="upcomingCount">0</div>
+                        <div class="card-label">Appointments</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Patients</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="patientsCount">0</div>
+                        <div class="card-label">Total</div>
+                    </div>
+                </div>
+                
+                <!-- Appointments Section -->
+                <div class="appointments">
+                    <div class="appointments-header">
+                        <h2>My Appointments</h2>
+                        <div class="appointments-filter">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                            <button class="filter-btn" data-filter="completed">Completed</button>
+                            <button class="filter-btn" data-filter="cancelled">Cancelled</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Appointment Cards View -->
+                    <div class="appointment-cards" id="appointmentCards">
+                        <!-- Appointment cards will be loaded here by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Schedule Section -->
+                <div class="schedule-section">
+                    <h2>Today's Schedule</h2>
+                    <div class="schedule-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">09:00 AM</div>
+                            <div class="timeline-content">
+                                <h3>John Doe</h3>
+                                <p>General Checkup</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">11:30 AM</div>
+                            <div class="timeline-content">
+                                <h3>Jane Smith</h3>
+                                <p>Follow-up Consultation</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">02:00 PM</div>
+                            <div class="timeline-content">
+                                <h3>Robert Johnson</h3>
+                                <p>Annual Physical</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Patients Section -->
+                <div class="patients-section" id="patients">
+                    <h2>My Patients</h2>
+                    <div class="patients-filter">
+                        <input type="text" id="patientSearchInput" placeholder="Search patients...">
+                        <select id="patientFilter">
+                            <option value="all">All Patients</option>
+                            <option value="recent">Recent Patients</option>
+                            <option value="upcoming">Upcoming Appointments</option>
+                        </select>
+                    </div>
+                    
+                    <div class="patient-cards" id="patientCards">
+                        <!-- Patient cards will be loaded here by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Video Call Section -->
+                <div class="video-call-section" id="video-call">
+                    <h2>Video Consultations</h2>
+                    <p>Start or join a video consultation with your patients.</p>
+                    
+                    <div class="video-call-actions">
+                        <button class="btn-primary" id="startVideoCall">
+                            <i class="fas fa-video"></i> Start New Call
+                        </button>
+                        <button class="btn-secondary" id="joinVideoCall">
+                            <i class="fas fa-sign-in-alt"></i> Join Existing Call
+                        </button>
+                    </div>
+                    
+                    <div class="video-call-info">
+                        <h3>Your Video Call ID</h3>
+                        <div class="video-call-id">
+                            <span id="videoCallId">DR-<script>document.write(Math.floor(Math.random() * 10000) + 1)</script></span>
+                            <button class="btn-icon" id="copyCallId" title="Copy Call ID">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Appointment Details Modal -->
+    <div class="modal" id="appointmentDetailModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">Appointment Details</h2>
+            <div class="appointment-details">
+                <div class="detail-row">
+                    <div class="detail-label">Patient Name:</div>
+                    <div class="detail-value" id="modalPatientName">John Doe</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Email:</div>
+                    <div class="detail-value" id="modalPatientEmail">john@example.com</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Date:</div>
+                    <div class="detail-value" id="modalAppointmentDate">March 29, 2025</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Time:</div>
+                    <div class="detail-value" id="modalAppointmentTime">10:00 AM</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Type:</div>
+                    <div class="detail-value" id="modalAppointmentType">In-Person</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Reason:</div>
+                    <div class="detail-value" id="modalAppointmentReason">Regular checkup</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Status:</div>
+                    <div class="detail-value status-upcoming" id="modalAppointmentStatus">Upcoming</div>
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button type="button" class="modal-cancel">Close</button>
+                <button type="button" class="modal-submit" id="completeAppointmentBtn">Mark as Completed</button>
+                <button type="button" class="btn-danger" id="cancelAppointmentBtn">Cancel Appointment</button>
+                <button type="button" class="btn-primary" id="startVideoCallBtn" style="display: none;">Start Video Call</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/doctor.js"></script>
+</body>
+</html>

@@ -69,7 +69,7 @@ ul {
 }
 
 .btn-primary:hover {
-    background-color: #000000;
+    background-color: #1abcb4;
     transform: translateY(-2px);
 }
 
@@ -134,8 +134,10 @@ nav ul li a {
 }
 
 nav ul li a:hover, nav ul li a.active {
-    color: #0077B6; 
+    color: #000000; 
     text-decoration: bold;
+    scale: 1.05;
+
 }
 
 /* Hero Section */
@@ -186,6 +188,7 @@ nav ul li a:hover, nav ul li a.active {
 .hero-buttons {
     display: flex;
     gap: 15px;
+   
 }
 
 .hero-image {
@@ -194,7 +197,9 @@ nav ul li a:hover, nav ul li a.active {
     animation-duration: 3s;
     animation-name: slide-in;
     animation-iteration-count: 1;
+    
 }
+
 
 .hero-image img {
     max-width: 100%;

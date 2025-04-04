@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Patient navigation
         if (dashboardLink) {
             dashboardLink.addEventListener('click', function() {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'patient-dashboard.html';
             });
         }
         

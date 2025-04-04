@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management | MEDIFIED AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-heartbeat"></i> <span>MedConnect</span></h2>
+            </div>
+            <div class="user-info">
+                <div class="avatar user-initials">DS</div>
+                <h3 class="user-name">Dr. Smith</h3>
+                <p class="user-specialization">Cardiologist</p>
+            </div>
+            <nav class="sidebar-menu">
+                <div class="menu-item" id="dashboard-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item" id="appointments-link">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Appointments</span>
+                </div>
+                <div class="menu-item active" id="patients-link">
+                    <i class="fas fa-users"></i>
+                    <span>Patients</span>
+                </div>
+                <div class="menu-item" id="video-call-link">
+                    <i class="fas fa-video"></i>
+                    <span>Video Calls</span>
+                </div>
+                <div class="menu-item" id="profile-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </div>
+            </nav>
+            <div class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-bar">
+                    <input type="text" id="patientSearchInput" placeholder="Search patients...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="top-bar-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">2</span>
+                    </button>
+                    <div class="user-dropdown">
+                        <div class="avatar user-initials">DS</div>
+                        <span class="user-name">Dr. Smith</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patients Content -->
+            <div class="dashboard-content">
+                <h1>My Patients</h1>
+                
+                <!-- Patients Filter -->
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label for="appointmentStatusFilter">Filter by Status</label>
+                        <select id="appointmentStatusFilter">
+                            <option value="">All Patients</option>
+                            <option value="active">Active Patients</option>
+                            <option value="new">New Patients</option>
+                            <option value="follow-up">Follow-up Required</option>
+                        </select>
+                    </div>
+                    <button id="applyPatientFilters" class="filter-btn">Apply Filters</button>
+                    <button id="resetPatientFilters" class="filter-btn secondary">Reset</button>
+                </div>
+                
+                <!-- Patients Table -->
+                <div class="patients-list">
+                    <table class="appointments-table">
+                        <thead>
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>Contact</th>
+                                <th>Last Visit</th>
+                                <th>Next Appointment</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientsTableBody">
+                            <!-- Patients will be loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Patient Statistics Cards -->
+                <h2>Patient Statistics</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Total Patients</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="totalPatientsCount">0</div>
+                        <div class="card-label">Patients</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>New Patients</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="newPatientsCount">0</div>
+                        <div class="card-label">This Month</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Follow-ups</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="followUpCount">0</div>
+                        <div class="card-label">Pending</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Average Rating</h3>
+                            <div class="card-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="avgRating">4.8</div>
+                        <div class="card-label">Out of 5</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Patient Details Modal -->
+    <div class="modal" id="patientDetailModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">Patient Details</h2>
+            <div class="patient-details">
+                <div class="detail-row">
+                    <div class="detail-label">Patient Name:</div>
+                    <div class="detail-value" id="modalPatientName">John Doe</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Email:</div>
+                    <div class="detail-value" id="modalPatientEmail">john@example.com</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Phone:</div>
+                    <div class="detail-value" id="modalPatientPhone">Not provided</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Date of Birth:</div>
+                    <div class="detail-value" id="modalPatientDob">Not provided</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Medical History:</div>
+                    <div class="detail-value" id="modalPatientHistory">No history recorded</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Current Medications:</div>
+                    <div class="detail-value" id="modalPatientMedications">None</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Allergies:</div>
+                    <div class="detail-value" id="modalPatientAllergies">None</div>
+                </div>
+            </div>
+            
+            <h3>Appointment History</h3>
+            <div class="patient-appointments" id="patientAppointmentHistory">
+                <!-- Appointment history will be loaded here -->
+            </div>
+            
+            <div class="modal-buttons">
+                <button type="button" class="modal-cancel">Close</button>
+                <button type="button" class="btn-primary" id="scheduleAppointmentBtn">Schedule Appointment</button>
+                <button type="button" class="btn-primary" id="startPatientVideoCallBtn">Start Video Call</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/patients.js"></script>
+</body>
+</html>

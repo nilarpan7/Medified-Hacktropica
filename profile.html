@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | MEDIFIED AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-heartbeat"></i> <span>MedConnect</span></h2>
+            </div>
+            <div class="user-info">
+                <div class="avatar user-initials">JD</div>
+                <h3 class="user-name">John Doe</h3>
+                <p class="user-email">john@example.com</p>
+            </div>
+            <nav class="sidebar-menu">
+                <div class="menu-item" id="dashboard-link">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item" id="appointments-link">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Appointments</span>
+                </div>
+                <div class="menu-item" id="doctors-link">
+                    <i class="fas fa-user-md"></i>
+                    <span>Find Doctors</span>
+                </div>
+                <div class="menu-item" id="video-call-link">
+                    <i class="fas fa-video"></i>
+                    <span>Video Calls</span>
+                </div>
+                <div class="menu-item active" id="profile-link">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </div>
+            </nav>
+            <div class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="page-title">User Profile</div>
+                <div class="top-bar-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="user-dropdown">
+                        <div class="avatar user-initials">JD</div>
+                        <span class="user-name">John Doe</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="dashboard-content">
+                <div class="profile-section">
+                    <div class="profile-header">
+                        <div class="profile-avatar user-initials">JD</div>
+                        <h2 class="user-name">John Doe</h2>
+                        <p class="user-email">john@example.com</p>
+                        <p class="user-type-display">Patient</p>
+                    </div>
+                    
+                    <div class="profile-tabs">
+                        <div class="profile-tab active" data-tab="personal">Personal Information</div>
+                        <div class="profile-tab" data-tab="medical">Medical History</div>
+                        <div class="profile-tab" data-tab="security">Security Settings</div>
+                    </div>
+                    
+                    <div class="profile-content">
+                        <!-- Personal Information Tab -->
+                        <div class="profile-content-tab active" id="personal-tab">
+                            <form id="personalInfoForm">
+                                <div class="form-group">
+                                    <label for="profileName">Full Name</label>
+                                    <input type="text" id="profileName" value="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileEmail">Email Address</label>
+                                    <input type="email" id="profileEmail" value="john@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profilePhone">Phone Number</label>
+                                    <input type="tel" id="profilePhone" placeholder="Enter your phone number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileDob">Date of Birth</label>
+                                    <input type="date" id="profileDob">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileGender">Gender</label>
+                                    <select id="profileGender">
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                        <option value="prefer-not">Prefer not to say</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileAddress">Address</label>
+                                    <textarea id="profileAddress" rows="3" placeholder="Enter your address"></textarea>
+                                </div>
+                                
+                                <!-- Doctor-specific fields -->
+                                <div id="doctorProfileFields" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="profileSpecialization">Specialization</label>
+                                        <select id="profileSpecialization">
+                                            <option value="">Select Specialization</option>
+                                            <option value="Cardiologist">Cardiologist</option>
+                                            <option value="Dermatologist">Dermatologist</option>
+                                            <option value="Neurologist">Neurologist</option>
+                                            <option value="Pediatrician">Pediatrician</option>
+                                            <option value="Psychiatrist">Psychiatrist</option>
+                                            <option value="Orthopedic">Orthopedic</option>
+                                            <option value="General Physician">General Physician</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profileExperience">Years of Experience</label>
+                                        <input type="number" id="profileExperience" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profileBio">Professional Bio</label>
+                                        <textarea id="profileBio" rows="4" placeholder="Write about your professional experience"></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-actions">
+                                    <button type="button" class="profile-action-btn cancel-btn">Cancel</button>
+                                    <button type="submit" class="profile-action-btn save-profile-btn">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Medical History Tab -->
+                        <div class="profile-content-tab" id="medical-tab">
+                            <!-- Patient-specific content -->
+                            <div id="patientMedicalContent">
+                                <h3>Medical History</h3>
+                                <p>Add and manage your medical history information.</p>
+                                
+                                <div class="form-group">
+                                    <label for="allergies">Allergies</label>
+                                    <textarea id="allergies" rows="3" placeholder="List any allergies you have"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="medications">Current Medications</label>
+                                    <textarea id="medications" rows="3" placeholder="List any medications you're currently taking"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="conditions">Pre-existing Conditions</label>
+                                    <textarea id="conditions" rows="3" placeholder="List any pre-existing medical conditions"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="surgeries">Previous Surgeries</label>
+                                    <textarea id="surgeries" rows="3" placeholder="List any previous surgeries and their dates"></textarea>
+                                </div>
+                                
+                                <div class="profile-actions">
+                                    <button type="button" class="profile-action-btn save-profile-btn">Save Medical Information</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Doctor-specific content -->
+                            <div id="doctorMedicalContent" style="display: none;">
+                                <h3>Medical Specialties</h3>
+                                <p>Add and manage your medical specialties and services offered.</p>
+                                
+                                <div class="form-group">
+                                    <label for="doctorSpecialization">Primary Specialization</label>
+                                    <select id="doctorSpecialization" class="form-control">
+                                        <option value="">Select Specialization</option>
+                                        <option value="Cardiologist">Cardiologist</option>
+                                        <option value="Dermatologist">Dermatologist</option>
+                                        <option value="Neurologist">Neurologist</option>
+                                        <option value="Pediatrician">Pediatrician</option>
+                                        <option value="Psychiatrist">Psychiatrist</option>
+                                        <option value="Orthopedic">Orthopedic</option>
+                                        <option value="General Physician">General Physician</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="specialties">Additional Specialties</label>
+                                    <textarea id="specialties" rows="3" placeholder="List your additional medical specialties"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="services">Services Offered</label>
+                                    <textarea id="services" rows="3" placeholder="List services you offer to patients"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="certifications">Certifications</label>
+                                    <textarea id="certifications" rows="3" placeholder="List your medical certifications"></textarea>
+                                </div>
+                                
+                                <div class="profile-actions">
+                                    <button type="button" class="profile-action-btn save-profile-btn">Save Specialty Information</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Security Settings Tab -->
+                        <div class="profile-content-tab" id="security-tab">
+                            <h3>Change Password</h3>
+                            <form id="changePasswordForm">
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <input type="password" id="currentPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password" id="newPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmNewPassword">Confirm New Password</label>
+                                    <input type="password" id="confirmNewPassword" required>
+                                </div>
+                                
+                                <div class="profile-actions">
+                                    <button type="submit" class="profile-action-btn save-profile-btn">Update Password</button>
+                                </div>
+                            </form>
+                            
+                            <div class="divider"></div>
+                            
+                            <h3>Notification Settings</h3>
+                            <div class="form-group">
+                                <div class="toggle-item">
+                                    <label for="emailNotifications">Email Notifications</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="emailNotifications" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="toggle-item">
+                                    <label for="smsNotifications">SMS Notifications</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="smsNotifications">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="toggle-item">
+                                    <label for="appointmentReminders">Appointment Reminders</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="appointmentReminders" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-actions">
+                                <button type="button" class="profile-action-btn save-profile-btn">Save Notification Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>
