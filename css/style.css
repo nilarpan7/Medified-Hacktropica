@@ -573,10 +573,9 @@ nav ul li a:hover, nav ul li a.active {
 .auth-container {
     max-width: 500px;
     margin: 0 auto;
-    background: -webkit-linear-gradient(to right,#00B4D8,#0096C7,#0077B6,#023E8A);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #00B4D8,#0096C7,#0077B6,#023E8A);
+    background: #343a40 ;
+    box-shadow: 0px 3px 3px 3px rgb(127, 124, 124); /* Chrome 10-25, Safari 5.1-6 */
     border-radius: 10px;
-    box-shadow: var(--shadow);
     overflow: hidden;
 }
 
@@ -597,8 +596,8 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .auth-tab.active {
-    background: linear-gradient(to right, #CAF0F8,#ADE8F4,#48CAE4);
-    color: var(--primary-color);
+    background: #676c70;
+    color: white;
     border-bottom: 3px solid var(--primary-color);
 }
 
@@ -613,7 +612,7 @@ nav ul li a:hover, nav ul li a.active {
 
 .auth-form h2 {
     margin-bottom: 25px;
-    color: var(--dark-color);
+    color: white;
     text-align: center;
 }
 
@@ -640,7 +639,7 @@ nav ul li a:hover, nav ul li a.active {
 .form-group input:focus, .form-group select:focus {
     border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    box-shadow: 0 0 0 2px rgba(242, 240, 240, 0.2);
 }
 
 .radio-group {
@@ -692,7 +691,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .user-type-option:hover .user-type-card {
-    border-color: #4a80f5;
+    border-color: #7281a2;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     scale : 1.05;
 }
