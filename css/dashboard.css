@@ -705,6 +705,199 @@ body {
     background-color: #3367d6;
 }
 
+/* Prescriptions Section */
+.prescriptions-section {
+    background-color: var(--bg-accent);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.prescriptions-section h2 {
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.prescription-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.prescription-card {
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.prescription-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.prescription-header {
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.prescription-date {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.prescription-status {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.prescription-status.new {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.prescription-status.viewed {
+    background-color: #51cf66;
+    color: white;
+}
+
+.prescription-body {
+    padding: 15px;
+}
+
+.prescription-body .doctor-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.prescription-body .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    margin-right: 12px;
+}
+
+.prescription-body .doctor-details {
+    flex: 1;
+}
+
+.prescription-body .doctor-name {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 3px;
+}
+
+.prescription-body .doctor-specialty {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.prescription-details {
+    margin-bottom: 15px;
+}
+
+.prescription-title {
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.prescription-notes {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.prescription-actions {
+    padding: 12px 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    gap: 10px;
+}
+
+.prescription-actions button {
+    flex: 1;
+    padding: 8px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.prescription-actions button i {
+    font-size: 14px;
+}
+
+.prescription-actions .view-prescription {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.prescription-actions .view-prescription:hover {
+    background-color: #3b71ca;
+}
+
+.prescription-actions .download-prescription {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.prescription-actions .download-prescription:hover {
+    background-color: #e9ecef;
+}
+
+.no-data-message {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Dark mode adjustments for prescriptions */
+[data-theme="dark"] .prescription-card {
+    background-color: var(--bg-card-dark, #2a2a2a);
+}
+
+[data-theme="dark"] .prescription-actions .download-prescription {
+    background-color: #2c3034;
+    color: #e9ecef;
+    border-color: #495057;
+}
+
+[data-theme="dark"] .prescription-actions .download-prescription:hover {
+    background-color: #343a40;
+}
+
 /* Responsive Styles */
 @media (max-width: 992px) {
     .sidebar {
