@@ -98,8 +98,147 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle notification badge visibility
     updateNotificationBadge();
     
-    // Theme Toggle Functionality
+    // Initialize theme functionality
+    initializeTheme();
+    
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+        });
+    }
+    
+    // Close sidebar when clicking outside of it (mobile only)
+    document.addEventListener('click', function(event) {
+        if (sidebar && !sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+            if (window.innerWidth < 992 && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            }
+        }
+    });
+});
+
+// Initialize theme functionality
+function initializeTheme() {
+    // Check if theme preference is stored in localStorage
+    const storedTheme = localStorage.getItem('theme');
+    
+    if (storedTheme) {
+        // Apply stored theme preference
+        document.documentElement.setAttribute('data-theme', storedTheme);
+    } else {
+        // Check if user prefers dark mode via system settings
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (prefersDarkMode) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+    
+    // Setup the toggle button
     setupThemeToggle();
+}
+
+// Toggle between light and dark themes
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    // Apply new theme
+    document.documentElement.setAttribute('data-theme', newTheme);
+    
+    // Save preference to localStorage
+    localStorage.setItem('theme', newTheme);
+    
+    // Add transition effect
+    document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+    
+    // Provide visual feedback
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.classList.add('active');
+        setTimeout(() => {
+            themeToggle.classList.remove('active');
+        }, 300);
+    }
+    
+    console.log('Theme changed to:', newTheme);
+}
+
+// Setup theme toggle button
+function setupThemeToggle() {
+    // Create toggle button if it doesn't exist or move it to the correct position
+    createToggleButtonIfNeeded();
+    
+    // Add event listener to existing button
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // Set initial icon based on current theme
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            themeToggle.title = "Switch to Light Mode";
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            themeToggle.title = "Switch to Dark Mode";
+        }
+    }
+}
+
+// Create theme toggle button if it doesn't exist or move it to the correct position
+function createToggleButtonIfNeeded() {
+    // Remove any existing toggle buttons first to ensure consistency
+    const existingToggle = document.getElementById('themeToggle');
+    if (existingToggle) {
+        existingToggle.remove();
+    }
+    
+    // Find the top bar actions and notification button
+    const topBarActions = document.querySelector('.top-bar-actions');
+    const notificationBtn = document.querySelector('.notification-btn');
+    
+    if (topBarActions && notificationBtn) {
+        // Create the toggle button with appropriate styling and icons
+        const themeToggle = document.createElement('div');
+        themeToggle.id = 'themeToggle';
+        themeToggle.className = 'theme-toggle';
+        themeToggle.title = "Toggle Dark/Light Mode";
+        
+        // Determine which icon to show based on current theme
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        
+        // Insert after notification button
+        notificationBtn.after(themeToggle);
+        console.log('Theme toggle button created in standard position');
+    } else {
+        console.error('Could not find top-bar-actions or notification-btn to add theme toggle');
+    }
+}
+
+// Call initialization on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Add listener for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        if (!localStorage.getItem('theme')) {
+            // Only apply system preference if user hasn't set a preference
+            const newTheme = event.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+        }
+    });
 });
 
 // Function to update notification badges
@@ -122,46 +261,4 @@ function updateNotificationBadge() {
             badge.style.display = 'none';
         }
     });
-}
-
-// Function to set up theme toggle
-function setupThemeToggle() {
-    const themeToggle = document.getElementById('themeToggle');
-    if (!themeToggle) return;
-    
-    // Load user's theme preference from localStorage or use system preference
-    loadThemePreference();
-    
-    // Add click event to toggle theme
-    themeToggle.addEventListener('click', function() {
-        toggleTheme();
-    });
-}
-
-// Function to toggle between light and dark themes
-function toggleTheme() {
-    if (document.documentElement.getAttribute('data-theme') === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-    }
-}
-
-// Function to load theme preference from localStorage
-function loadThemePreference() {
-    const savedTheme = localStorage.getItem('theme');
-    
-    if (savedTheme) {
-        // Use saved preference
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    } else {
-        // Check if user prefers dark mode in their OS settings
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-        }
-    }
 }
