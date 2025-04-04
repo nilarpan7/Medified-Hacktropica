@@ -22,8 +22,8 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     background: #00C9FF;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right,#CAF0F8,#ADE8F4,#48CAE4,#00B4D8,#0096C7,#0077B6,#023E8A);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #CAF0F8,#ADE8F4,#48CAE4,#00B4D8,#0096C7,#0077B6,#023E8A);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: black;  /* Chrome 10-25, Safari 5.1-6 */
+    background: black;/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .container {
@@ -50,7 +50,7 @@ ul {
     /* text-align: center; */
     margin-bottom: 40px;
     font-size: 2.5rem;
-    color: var(--dark-color);
+    color: var(--light-color);
 }
 
 .btn-primary, .btn-secondary {
@@ -63,9 +63,10 @@ ul {
 }
 
 .btn-primary {
-    background-color: rgb(56, 56, 93);
+    background-color: rgb(60, 12, 72);
     color: var(--light-color);
     border: none;
+    
 }
 
 .btn-primary:hover {
@@ -93,8 +94,8 @@ header {
     right: 0;
     z-index: 100;
     background: #00C9FF;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right,#CAF0F8,#ADE8F4,#48CAE4,#00B4D8,#0096C7,#0077B6,#023E8A);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #CAF0F8,#ADE8F4,#48CAE4,#00B4D8,#0096C7,#0077B6,#023E8A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background:- rgb(106, 102, 102);  /* Chrome 10-25, Safari 5.1-6 */
+    background: rgb(106, 102, 102); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     box-shadow: 5px 0px 5px rgb(103, 103, 103);
 }
 
@@ -108,7 +109,7 @@ header .container {
 }
 
 .logo h2 {
-    color: black;                                                                                               
+    color: rgb(255, 255, 255);                                                                                               
     font-size: 1.8rem;
     display: flex;
     align-items: center;
@@ -131,10 +132,11 @@ nav ul li {
 nav ul li a {
     padding: 10px;
     transition: var(--transition);
+    color: white;
 }
 
 nav ul li a:hover, nav ul li a.active {
-    color: #000000; 
+    color: #282d2d; 
     text-decoration: bold;
     scale: 1.05;
 
@@ -154,35 +156,31 @@ nav ul li a:hover, nav ul li a.active {
 .hero-content {
     flex: 1;
 }
-
-.hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: var(--dark-color);
-    animation-duration: 3s;
-    animation-name: slide-in;
-    animation-iteration-count: 1;
+@keyframes pulse-text {
+    0% {
+        text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+        transform: scale(1);
+    }
+    100% {
+        text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+        transform: scale(1.02);
+    }
 }
+.hero-content h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    color: rgb(255, 255, 255);
+    animation: pulse-text 2s infinite alternate;
+}
+
+
 
 .hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    color: #666;
-    animation-duration: 3s;
-    animation-name: slide-in;
-    animation-iteration-count: 1;
+    color: rgb(255, 255, 255);
+    animation: fade-in 1s ease-out;
+    margin-bottom: 15px;
 }
-@keyframes slide-in {
-    from {
-      translate: 150vw 0;
-      scale: 200% 1;
-    }
-  
-    to {
-      translate: 0 0;
-      scale: 100% 1;
-    }
-  }
+
   
 
 .hero-buttons {
