@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediFind - Doctor Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline-block;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+            animation: scaleIn 0.8s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: translateX(-50%) scaleX(0);
+            }
+            to {
+                transform: translateX(-50%) scaleX(1);
+            }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--dark);
+            opacity: 0.8;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 0.8;
+            }
+        }
+
+        .search-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            opacity: 1;
+            animation: slideUp 0.8s ease-out 0.4s both;
+            margin-bottom: 2rem;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            animation: bounceIn 0.8s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .search-input {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            background: #5649c0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.3));
+            transform: translateX(-100%);
+            transition: transform 0.4s ease-out;
+        }
+
+        .submit-btn:hover::after {
+            transform: translateX(100%);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            border: 5px solid var(--secondary);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-info {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .doctor-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--secondary);
+        }
+
+        .doctor-details {
+            flex: 1;
+        }
+
+        .doctor-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .doctor-specialty {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .doctor-rating {
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+        }
+
+        .doctor-address, .doctor-phone {
+            color: var(--dark);
+            opacity: 0.8;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .doctor-distance {
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .doctor-availability {
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .doctor-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            display: flex;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+           
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .book-btn {
+            background: var(--primary);
+            color: white;
+        }
+        a{
+            text-decoration: none;
+        }
+
+        .book-btn:hover {
+            background: #5649c0;
+        }
+
+        .directions-btn {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .directions-btn:hover {
+            background: var(--light);
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 20%;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--accent);
+            bottom: 10%;
+            right: -50px;
+            animation-delay: 3s;
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            background: var(--success);
+            top: 60%;
+            left: 30%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(100px, 0) rotate(180deg);
+            }
+            75% {
+                transform: translate(50px, -50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        .error-message {
+            color: var(--danger);
+            background: rgba(214, 48, 49, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            20%, 60% {
+                transform: translateX(-5px);
+            }
+            40%, 80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow: auto;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--dark);
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #5649c0;
+        }
+
+        .secondary-btn {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .secondary-btn:hover {
+            background: var(--light);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .no-results.visible {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .doctor-info {
+                flex-direction: column;
+            }
+
+            .doctor-actions {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+                padding: 1.5rem;
+            }
+
+            #map {
+                height: 300px;
+            }
+
+            .shape-1, .shape-2, .shape-3 {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container">
+
+        <main class="main-content">
+            <div class="error-message" id="error-message"></div>
+
+            <div class="search-card">
+                <div class="card-header">
+                    <div class="card-icon">👨‍⚕️</div>
+                    <h2 class="card-title">Find Doctors Nearby</h2>
+                </div>
+
+                <div class="search-input">
+                    <label for="condition" class="input-label">Medical Condition:</label>
+                    <input type="text" id="condition" class="input-field" placeholder="e.g. diabetes, heart disease">
+                </div>
+
+                <div class="search-input">
+                    <label for="location" class="input-label">Your Location:</label>
+                    <input type="text" id="location" class="input-field" placeholder="Enter your address or zip code">
+                    <button id="current-location-btn" class="action-btn secondary-btn" style="margin-top: 0.5rem;">
+                        <i class="fas fa-location-arrow"></i> Use Current Location
+                    </button>
+                </div>
+
+                <div class="search-input">
+                    <label for="specialty" class="input-label">Specialty:</label>
+                    <select id="specialty" class="input-field">
+                        <option value="">Any Specialty</option>
+                        <option value="family">Family Medicine</option>
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="internal">Internal Medicine</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="dermatology">Dermatology</option>
+                        <option value="neurology">Neurology</option>
+                        <option value="orthopedics">Orthopedics</option>
+                        <option value="ent">ENT (Ear, Nose, Throat)</option>
+                    </select>
+                </div>
+
+                <button id="search-btn" class="submit-btn">
+                    <span>Search Doctors</span>
+                    <span>🔍</span>
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="loader"></div>
+                <p>Searching for doctors in your area...</p>
+            </div>
+
+            <div class="no-results" id="no-results">
+                <h3>No doctors found matching your criteria</h3>
+                <p>Try adjusting your search parameters or location</p>
+            </div>
+
+            <div id="results-grid"></div>
+        </main>
+    </div>
+
+    <!-- Map Modal -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Get Directions</h3>
+            <div id="map"></div>
+            <div class="modal-actions">
+                <button id="open-google-maps" class="modal-btn primary-btn">
+                    <i class="fas fa-external-link-alt"></i> Open in Google Maps
+                </button>
+                <button class="modal-btn secondary-btn close-modal-btn">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample doctor data
+        const sampleDoctors = [
+            {
+                id: 1,
+                name: "Dr. Dhruba Banerjee, MBBS (Cal)",
+                specialty: "Family Medicine",
+                address: "opposite Loknath Moshla Corner, 18/2/1 and 32, Kayasthapara Main Rd, opposite Loknath Moshla Corner, Kolkata, West Bengal 700078",
+                phone: "89102 21936",
+                distance: 0.8,
+                acceptsNewPatients: true,
+                rating: 4.7,
+                image: "https://lh3.googleusercontent.com/p/AF1QipNikLUS5dg1fZ2X4XS_8E9Tbs20dn8OMEGEvCsD=s680-w680-h510"
+            },
+            {
+                id: 2,
+                name: "Dr. Sanjoy Ghosh",
+                specialty: "Family Medicine",
+                address: "Block, Office Tower, Sector 1, City Centre, Salt Lake, Apollo Clinic Salt Lake, Kolkata, West Bengal 700064",
+                phone: "1860 500 1066",
+                distance: 0.8,
+                acceptsNewPatients: true,
+                rating: 4.7,
+                image: "https://lh3.googleusercontent.com/p/AF1QipOTedCtRG-aM-ym64TB6gAQwPu5lhorR-QASEGN=s1360-w1360-h1020"
+            },
+            {
+                id: 3,
+                name: "Dr. Sandip Kumar Chandra",
+                specialty: "Family Medicine",
+                address: "Apollo Multispeciality Hospitals, 58, Canal Circular Rd, Kadapara, Phool Bagan, Kankurgachi, Kolkata, West Bengal 700054",
+                phone: "80 4775 7935",
+                distance: 0.8,
+                acceptsNewPatients: true,
+                rating: 4.7,
+                image: "https://lh3.googleusercontent.com/p/AF1QipN48o6kJF8SokaLr9XlwfapZfA5p8d_jpFnKCna=s1360-w1360-h1020"
+            },
+            {
+                id: 4,
+                name: "Dr. Amitabha Saha",
+                specialty: "Internal Medicine",
+                address: "SURAKSHA, CENTRAL POLLUTION CONTROL BOARD, 1582, Rajdanga Main Rd, Kasba New Market, Sector E, East Kolkata Twp, Kolkata, West Bengal 700107",
+                phone: "98300 43059",
+                distance: 1.2,
+                acceptsNewPatients: true,
+                rating: 4.5,
+                image: "https://lh3.googleusercontent.com/gps-cs-s/AB5caB85pmgK0qyqUE3nRwoI-hEWlGbRvinZyYIdiuNPTMJXOoF0xhZlNjKyGxUFOqgJuX5tQv-AeaH5BH1dApVLSZW3v2aLXEdZvp6i_xXdmZRqkLaiSefQM2UsRNLXRWbTKHPJn9RhNg=s1360-w1360-h1020"
+            },
+            {
+                id: 5,
+                name: "Dr. Prattay Ghosh",
+                specialty: "Internal Medicine",
+                address: "H9GQ+R5Q, Apollo Beliaghata, Phool Bagan, Kankurgachi, Kolkata, West Bengal 700054",
+                phone: "98300 43059",
+                distance: 1.2,
+                acceptsNewPatients: true,
+                rating: 4.5,
+                image: "https://lh3.googleusercontent.com/p/AF1QipORAd4rrGd06gmN8UBpGxFWtcUjrspBESvrCxC_=s1360-w1360-h1020"
+            },
+            {
+                id: 6,
+                name: "Dr. Hirak Mazumder",
+                specialty: "Internal Medicine",
+                address: "Apollo Multispeciality Hospitals Limited, 58, Canal Circular Rd, beside Mani Square Mall, Kadapara, Phool Bagan, Kankurgachi, Kolkata, West Bengal 700054",
+                phone: "98300 43059",
+                distance: 1.2,
+                acceptsNewPatients: true,
+                rating: 4.5,
+                image: "https://lh5.googleusercontent.com/p/AF1QipN3zp-VxzzfoeUGhRojJPVBQEtqDqhO4GqB11SG=w325-h218-n-k-no"
+            },
+            {
+                id: 7,
+                name: "Dr. Anirban Basu",
+                specialty: "Pediatrics",
+                address: "Desun More, 720, Eastern Metropolitan Bypass, Golpark, Sector I, Kasba, Kolkata, West Bengal 700107",
+                phone: "98304 18151",
+                distance: 2.5,
+                acceptsNewPatients: true,
+                rating: 4.9,
+                image: "https://lh5.googleusercontent.com/p/AF1QipMwvvUEjXMhaczgiK2obhOCsuVyQMEsCe1dWgt_=w325-h218-n-k-no"
+            },
+            {
+                id: 8,
+                name: "Dr Md Rahiul Islam",
+                specialty: "Pediatrics",
+                address: "8/30, KF Medical Centre, Fern Rd, Ballygunge Gardens, Gariahat, Kolkata, West Bengal 700019",
+                phone: "33 6680 0000",
+                distance: 2.5,
+                acceptsNewPatients: true,
+                rating: 4.9,
+                image: "https://lh3.googleusercontent.com/p/AF1QipMa-4yNYfCdyaj5qJv9rToD-QvFeL8KE7h_Dqit=s1360-w1360-h1020"
+            },
+            {
+                id: 9,
+                name: "Dr. Arijita Chatterjee",
+                specialty: "Pediatrics",
+                address: "Desun Hospital, 720, Eastern Metropolitan Bypass, Golpark, Sector I, Kasba, Kolkata, West Bengal 700107",
+                phone: "33 66xx 0000",
+                distance: 2.5,
+                acceptsNewPatients: true,
+                rating: 4.9,
+                image: "https://lh3.googleusercontent.com/p/AF1QipNGJ4WyZ3qM6OelVu2MInyqwzufxfxCgvaWvXZC=s1360-w1360-h1020"
+            },
+            {
+                id: 10,
+                name: "Dr. Saheli Dasgupta",
+                specialty: "Pediatrics",
+                address: "422, Raja Subodh Chandra Mallick Rd, Selimpur, Jodhpur Park, Kolkata, West Bengal 700068",
+                phone: "82401 12375",
+                distance: 2.5,
+                acceptsNewPatients: true,
+                rating: 4.9,
+                image: "https://lh5.googleusercontent.com/p/AF1QipOHKuDsMLzQHTYkS4uUAf8M7Y4qsy99-KgdRABt=w325-h218-n-k-no"
+            },
+            {
+                id: 11,
+                name: "Dr Parijat Deb Choudhury",
+                specialty: "Cardiology",
+                address: "Medithics Clinic, 1412, near R. N. Tagore Hospital, Mukundapur Market, Nitai Nagar, Mukundapur, Kolkata, West Bengal 700099",
+                phone: "33 4058 5544",
+                distance: 2.5,
+                acceptsNewPatients: true,
+                rating: 4.9,
+                image: "https://lh5.googleusercontent.com/p/AF1QipNTtD0Y-5UfUsU9DIqfwaksmNRHDlljjpG5wwDi=w325-h218-n-k-no"
+            },
+            {
+                id: 12,
+                name: "Dr. Anup Khetan",
+                specialty: "Cardiology",
+                address: "1489, Eastern Metropolitan Bypass, Mukundapur Market, Stadium Colony, Mukundapur, Kolkata, West Bengal 700099",
+                phone: "80675 06860",
+                distance: 2.5,
+                acceptsNewPatients: true,
+                rating: 4.9,
+                image: "https://lh5.googleusercontent.com/p/AF1QipMMre6yi-0lmn338bp5UAscOS0_fTZnldwjewQ2=w325-h218-n-k-no"
+            },
+            {
+                id: 13,
+                name: "Dr. Supratip Kundu",
+                specialty: "Cardiology",
+                address: "AMRI Hospital, Department of Cardiology Block-A, Scheme-L11 P-4&5, Gariahat Rd, Dhakuria, Kolkata, West Bengal 700029",
+                phone: "86970 11201",
+                distance: 2.5,
+                acceptsNewPatients: true,
+                rating: 4.9,
+                image: "https://lh5.googleusercontent.com/p/AF1QipPI3dqI8RNxgh-0xnyEmuGB3l6EX7C6BOPC2UHf=w325-h218-n-k-no"
+            },
+            {
+                id: 14,
+                name: "Dr P K Hazra",
+                specialty: "Cardiology",
+                address: "amri hospital, Gariahat Rd, near dhakuria bridge, Kolkata, West Bengal 700029",
+                phone: "98300 70337",
+                distance: 3.1,
+                acceptsNewPatients: true,
+                rating: 4.8,
+                image: "https://lh5.googleusercontent.com/p/AF1QipPhEzljLYvO8rB0q7bpj6QsZMTQWWF5cqSXUsXl=w162-h108-n-k-no"
+            },
+            {
+                id: 15,
+                name: "Dr Surajit Gorai",
+                specialty: "Dermatology",
+                address: "Apollo Multispeciality Hospital (formerly Gleneagles, Kadapara, Phool Bagan, Kankurgachi, Kolkata, West Bengal 700054",
+                phone: "91238 56730",
+                distance: 3.1,
+                acceptsNewPatients: true,
+                rating: 4.8,
+                image: "https://lh5.googleusercontent.com/p/AF1QipMHDFQgm87NaEvHC6DqgLsZ0tRNhCixpxDJBTa5=w162-h108-n-k-no"
+            },
+            {
+                id: 16,
+                name: "Dr. Punam De",
+                specialty: "Dermatology",
+                address: "Skin Vita Clinic, 4th floor Premlata building, 39, Shakespeare Sarani Rd, opp. Kalamandir, Kolkata, West Bengal 700054",
+                phone: "98302 02395",
+                distance: 3.1,
+                acceptsNewPatients: true,
+                rating: 4.8,
+                image: "https://lh5.googleusercontent.com/p/AF1QipPiMI6TiFf8m0aGLCRuBg79okbU_J-sne5aqHGY=w325-h218-n-k-no"
+            },
+            {
+                id: 17,
+                name: "Dr. Lisa Park",
+                specialty: "Dermatology",
+                address: "202 Skin Care Blvd, Anytown, ST 12345",
+                phone: "(555) 567-8901",
+                distance: 1.8,
+                acceptsNewPatients: true,
+                rating: 4.6,
+                image: "https://randomuser.me/api/portraits/women/28.jpg"
+            },
+            {
+                id: 18,
+                name: "Dr. Robert Thompson",
+                specialty: "Neurology",
+                address: "303 Brain Center Dr, Anytown, ST 12345",
+                phone: "(555) 678-9012",
+                distance: 4.2,
+                acceptsNewPatients: true,
+                rating: 4.7,
+                image: "https://randomuser.me/api/portraits/men/82.jpg"
+            }
+        ];
+
+        // DOM elements
+        const locationInput = document.getElementById('location');
+        const specialtySelect = document.getElementById('specialty');
+        const currentLocationBtn = document.getElementById('current-location-btn');
+        const searchBtn = document.getElementById('search-btn');
+        const loadingDiv = document.getElementById('loading');
+        const noResultsDiv = document.getElementById('no-results');
+        const resultsGrid = document.getElementById('results-grid');
+        const errorMessage = document.getElementById('error-message');
+
+        // Modal elements
+        const mapModal = document.getElementById('mapModal');
+        const closeBtn = document.querySelector('.close-btn');
+        const closeModalBtn = document.querySelector('.close-modal-btn');
+        const openGoogleMapsBtn = document.getElementById('open-google-maps');
+        let currentDoctorForMap = null;
+        let map = null;
+        let directionsService = null;
+        let directionsRenderer = null;
+        let mapInitialized = false;
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Get current location button
+            currentLocationBtn.addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            locationInput.value = "Current Location";
+                            locationInput.dataset.lat = position.coords.latitude;
+                            locationInput.dataset.lng = position.coords.longitude;
+                        },
+                        function(error) {
+                            showError("Unable to retrieve your location. Please enter your address manually.");
+                            console.error("Geolocation error:", error);
+                        }
+                    );
+                } else {
+                    showError("Geolocation is not supported by your browser. Please enter your address manually.");
+                }
+            });
+
+            // Search doctors button
+            searchBtn.addEventListener('click', searchDoctors);
+
+            // Modal close buttons
+            closeBtn.addEventListener('click', function() {
+                mapModal.style.display = 'none';
+            });
+
+            closeModalBtn.addEventListener('click', function() {
+                mapModal.style.display = 'none';
+            });
+
+            // Open in Google Maps button
+            openGoogleMapsBtn.addEventListener('click', function() {
+                if (currentDoctorForMap) {
+                    const address = encodeURIComponent(currentDoctorForMap.address);
+                    window.open(`https://www.google.com/maps/dir/?api=1&destination=${address}`, '_blank');
+                }
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === mapModal) {
+                    mapModal.style.display = 'none';
+                }
+            });
+        }
+
+        // Search for doctors
+        function searchDoctors() {
+            const location = locationInput.value.trim();
+            const specialty = specialtySelect.value;
+
+            if (!location) {
+                showError("Please enter your location.");
+                return;
+            }
+
+            showLoading();
+
+            // Simulate API call with setTimeout
+            setTimeout(function() {
+                hideLoading();
+
+                // Filter doctors based on specialty (if selected)
+                let filteredDoctors = sampleDoctors;
+                if (specialty) {
+                    const specialtyMap = {
+                        'family': 'Family Medicine',
+                        'pediatrics': 'Pediatrics',
+                        'internal': 'Internal Medicine',
+                        'cardiology': 'Cardiology',
+                        'dermatology': 'Dermatology',
+                        'neurology': 'Neurology',
+                        'orthopedics': 'Orthopedics',
+                        'ent': 'ENT (Ear, Nose, Throat)'
+                    };
+                    const specialtyText = specialtyMap[specialty];
+                    filteredDoctors = sampleDoctors.filter(doctor => doctor.specialty === specialtyText);
+                }
+
+                // Sort by distance
+                filteredDoctors.sort((a, b) => a.distance - b.distance);
+
+                // Display results
+                displayDoctorResults(filteredDoctors);
+            }, 1500); // Simulate network delay
+        }
+
+        // Show loading spinner
+        function showLoading() {
+            loadingDiv.style.display = 'block';
+            resultsGrid.style.display = 'none';
+            noResultsDiv.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
+
+        function hideLoading() {
+            loadingDiv.style.display = 'none';
+        }
+
+        // Show error message
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Display doctor search results
+        function displayDoctorResults(doctors) {
+            resultsGrid.innerHTML = '';
+
+            if (doctors.length === 0) {
+                noResultsDiv.style.display = 'block';
+                return;
+            }
+
+            noResultsDiv.style.display = 'none';
+
+            doctors.forEach((doctor, index) => {
+                const doctorCard = document.createElement('div');
+                doctorCard.className = 'doctor-card';
+                doctorCard.style.animationDelay = `${index * 0.1}s`;
+                doctorCard.innerHTML = `
+                    <div class="doctor-info">
+                        <img src="${doctor.image}" alt="${doctor.name}" class="doctor-image">
+                        <div class="doctor-details">
+                            <h3 class="doctor-name">${doctor.name}</h3>
+                            <p class="doctor-specialty">${doctor.specialty}</p>
+                            <p class="doctor-rating">
+                                ${'★'.repeat(Math.floor(doctor.rating))}${'☆'.repeat(5 - Math.floor(doctor.rating))} 
+                                (${doctor.rating.toFixed(1)})
+                            </p>
+                            <p class="doctor-address"><i class="fas fa-map-marker-alt"></i> ${doctor.address}</p>
+                            <p class="doctor-phone"><i class="fas fa-phone"></i> ${doctor.phone}</p>
+                            <span class="doctor-distance"><i class="fas fa-walking"></i> ${doctor.distance} miles away</span>
+                            ${doctor.acceptsNewPatients ? 
+                                '<span class="doctor-availability" style="color:green;margin-left:10px;"><i class="fas fa-check-circle"></i> Accepting new patients</span>' : 
+                                '<span class="doctor-availability" style="color:red;margin-left:10px;"><i class="fas fa-times-circle"></i> Not accepting new patients</span>'}
+                        </div>
+                    </div>
+                    <div class="doctor-actions">
+                        <a href="index.html"><button class="action-btn book-btn" data-id="${doctor.id}">
+                            <i class="fas fa-calendar-check"></i> Book Appointment
+                        </button></a>
+                        <button class="action-btn directions-btn" data-id="${doctor.id}">
+                            <i class="fas fa-directions"></i> Get Directions
+                        </button>
+                    </div>
+                `;
+                resultsGrid.appendChild(doctorCard);
+            });
+
+            // Add event listeners to direction buttons
+            document.querySelectorAll('.directions-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const doctorId = this.getAttribute('data-id');
+                    const doctor = sampleDoctors.find(d => d.id == doctorId);
+                    currentDoctorForMap = doctor;
+                    
+                    // Show modal
+                    mapModal.style.display = 'block';
+                    
+                    // Initialize map if not already done
+                    if (!mapInitialized) {
+                        initMap();
+                    } else {
+                        // If map is already initialized, just center it
+                        map.setCenter({lat: 37.7749, lng: -122.4194}); // Default to San Francisco
+                    }
+                    
+                    // Try to get user's current location
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                const userLocation = {
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                                };
+                                
+                                // Center map between user and doctor
+                                const bounds = new google.maps.LatLngBounds();
+                                bounds.extend(userLocation);
+                                bounds.extend({lat: 37.7749, lng: -122.4194}); // Doctor location (sample)
+                                map.fitBounds(bounds);
+                                
+                                // Calculate and display route
+                                calculateAndDisplayRoute(userLocation, {lat: 37.7749, lng: -122.4194});
+                            },
+                            function(error) {
+                                // If geolocation fails, just center on doctor's location
+                                map.setCenter({lat: 37.7749, lng: -122.4194});
+                                showError("Couldn't get your location. Showing doctor's location only.");
+                            }
+                        );
+                    } else {
+                        // Browser doesn't support Geolocation
+                        map.setCenter({lat: 37.7749, lng: -122.4194});
+                        showError("Geolocation is not supported by your browser. Showing doctor's location only.");
+                    }
+                });
+            });
+
+            resultsGrid.style.display = 'grid';
+        }
+
+        // Initialize Google Maps
+        function initMap() {
+            try {
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer();
+                
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: {lat: 37.7749, lng: -122.4194} // Default to San Francisco
+                });
+                
+                directionsRenderer.setMap(map);
+                mapInitialized = true;
+            } catch (error) {
+                console.error("Google Maps failed to load:", error);
+                showError("Maps functionality is currently unavailable. Please try again later.");
+                mapModal.style.display = 'none';
+            }
+        }
+
+        // Calculate and display route
+        function calculateAndDisplayRoute(start, end) {
+            directionsService.route(
+                {
+                    origin: start,
+                    destination: end,
+                    travelMode: google.maps.TravelMode.DRIVING
+                },
+                function(response, status) {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        showError('Directions request failed due to ' + status);
+                    }
+                }
+            );
+        }
+    </script>
+    <!-- Load Google Maps API - Replace YOUR_API_KEY with your actual API key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=places&v=weekly" async defer></script>
+</body>
+</html>
