@@ -42,6 +42,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const notificationDropdown = document.getElementById('notificationDropdown');
     const notificationContent = document.getElementById('notificationContent');
     
+    // Prescription section elements
+    const createPrescriptionBtn = document.getElementById('createPrescriptionBtn');
+    const doctorPrescriptionCardsContainer = document.getElementById('doctorPrescriptionCards');
+    const prescriptionFilterBtns = document.querySelectorAll('.prescriptions-section .filter-btn');
+    
     // Initialize page
     initializePage();
     
@@ -103,6 +108,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Prescription section event listeners
+    if (prescriptionFilterBtns.length > 0) {
+        prescriptionFilterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const filter = this.dataset.filter;
+                
+                // Update active state
+                prescriptionFilterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Reload prescriptions with filter
+                loadDoctorPrescriptions(filter);
+            });
+        });
+    }
+    
+    if (createPrescriptionBtn) {
+        createPrescriptionBtn.addEventListener('click', createNewPrescription);
+    }
+    
     // Notification button event listener
     if (notificationBtn) {
         notificationBtn.addEventListener('click', toggleNotificationDropdown);
@@ -146,6 +171,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Load notifications
         loadNotifications();
+        
+        // Load prescriptions
+        loadDoctorPrescriptions();
         
         // Generate video call ID if not already set
         if (videoCallIdDisplay && !videoCallIdDisplay.textContent) {
@@ -539,6 +567,220 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
+    // Prescription Functions
+    function loadDoctorPrescriptions(filterValue = 'all') {
+        if (!doctorPrescriptionCardsContainer) return;
+        
+        // Get the current user's prescriptions
+        const prescriptions = currentUser.prescriptions || [];
+        
+        // Early return if no prescriptions
+        if (prescriptions.length === 0) {
+            doctorPrescriptionCardsContainer.innerHTML = '<div class="no-data">No prescriptions found.</div>';
+            return;
+        }
+        
+        // Sort prescriptions by date (newest first)
+        prescriptions.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        // Filter prescriptions based on status
+        const filteredPrescriptions = filterValue === 'all' ? 
+            prescriptions : 
+            prescriptions.filter(prescription => {
+                if (filterValue === 'active') return prescription.status === 'Active';
+                if (filterValue === 'inactive') return prescription.status === 'Inactive';
+                return true;
+            });
+        
+        if (filteredPrescriptions.length === 0) {
+            doctorPrescriptionCardsContainer.innerHTML = `<div class="no-data">No ${filterValue} prescriptions found.</div>`;
+            return;
+        }
+        
+        let prescriptionHTML = '';
+        
+        // Generate HTML for each prescription card
+        filteredPrescriptions.forEach(prescription => {
+            const statusClass = getStatusClass(prescription.status);
+            const prescriptionDate = new Date(prescription.date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const isToday = prescriptionDate.getTime() === today.getTime();
+            const isPast = prescriptionDate < today;
+            
+            let dateLabel = formatDate(prescription.date);
+            if (isToday) dateLabel = 'Today';
+            
+            // Set appropriate icon based on prescription status
+            let statusIcon = 'fa-calendar-check';
+            if (prescription.status === 'Active') statusIcon = 'fa-check-circle';
+            if (prescription.status === 'Inactive') statusIcon = 'fa-times-circle';
+            
+            // Create priority label for prescriptions
+            let priorityLabel = '';
+            let priorityClass = '';
+            
+            if (isToday && prescription.status === 'Active') {
+                priorityLabel = 'Today';
+                priorityClass = 'priority-high';
+            } else if (!isPast && prescription.status === 'Active') {
+                priorityLabel = 'Active';
+                priorityClass = 'priority-low';
+            }
+            
+            prescriptionHTML += `
+            <div class="prescription-card ${statusClass.replace('status-', '')}">
+                <div class="prescription-card-header">
+                    <div class="prescription-status">
+                        <i class="fas ${statusIcon}"></i>
+                        <span class="status-badge ${statusClass}">${prescription.status}</span>
+                    </div>
+                    ${priorityLabel ? `<div class="priority-badge ${priorityClass}">${priorityLabel}</div>` : ''}
+                </div>
+                <div class="prescription-card-body">
+                    <div class="prescription-patient">
+                        <div class="patient-avatar">${getInitials(prescription.patientName)}</div>
+                        <div class="patient-info">
+                            <h3>${prescription.patientName}</h3>
+                            <p>Patient ID: ${prescription.patientId}</p>
+                        </div>
+                    </div>
+                    <div class="prescription-details">
+                        <div class="prescription-detail">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>${dateLabel}</span>
+                        </div>
+                        <div class="prescription-detail">
+                            <i class="fas fa-stethoscope"></i>
+                            <span>${prescription.medicine || 'Not specified'}</span>
+                        </div>
+                        <div class="prescription-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${prescription.dosage || 'Not specified'}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prescription-card-footer">
+                    <button class="btn-secondary" onclick="viewPrescriptionDetails('${prescription.id}')">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                    ${prescription.status === 'Active' ? 
+                    `<button class="btn-danger" onclick="deactivatePrescription('${prescription.id}')">
+                        <i class="fas fa-times"></i> Deactivate
+                    </button>` : ''}
+                </div>
+            </div>
+            `;
+        });
+        
+        doctorPrescriptionCardsContainer.innerHTML = prescriptionHTML;
+    }
+    
+    function createNewPrescription() {
+        // Create a new prescription modal and display it
+        const modalContent = `
+        <div class="modal" id="newPrescriptionModal" style="display: block;">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <h2 class="modal-title">New Prescription</h2>
+                <div class="prescription-form">
+                    <div class="form-group">
+                        <label for="patientName">Patient Name:</label>
+                        <input type="text" id="patientName" name="patientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medicine">Medicine:</label>
+                        <input type="text" id="medicine" name="medicine" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dosage">Dosage:</label>
+                        <input type="text" id="dosage" name="dosage" required>
+                    </div>
+                    <button class="btn-primary" onclick="saveNewPrescription()">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+        `;
+        
+        // Create a temporary container
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = modalContent;
+        
+        // Append to body
+        document.body.appendChild(tempContainer.firstChild);
+    }
+    
+    function saveNewPrescription() {
+        // Get form data
+        const patientName = document.getElementById('patientName').value;
+        const medicine = document.getElementById('medicine').value;
+        const dosage = document.getElementById('dosage').value;
+        
+        // Create a new prescription object
+        const newPrescription = {
+            id: `PRE-${Math.floor(Math.random() * 10000) + 1}`,
+            patientId: 'PAT-123', // Replace with actual patient ID
+            patientName: patientName,
+            medicine: medicine,
+            dosage: dosage,
+            date: new Date().toISOString(),
+            status: 'Active'
+        };
+        
+        // Add new prescription to doctor's list
+        const prescriptions = currentUser.prescriptions || [];
+        prescriptions.push(newPrescription);
+        currentUser.prescriptions = prescriptions;
+        
+        // Update in localStorage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        // Reload prescriptions
+        loadDoctorPrescriptions();
+        
+        // Close modal
+        closeModal();
+    }
+    
+    function deactivatePrescription(prescriptionId) {
+        if (!confirm('Deactivate this prescription?')) {
+            return;
+        }
+        
+        // Get current user
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            console.error('No user logged in');
+            return;
+        }
+        
+        // Find prescription in doctor's list
+        const prescriptions = currentUser.prescriptions || [];
+        const prescriptionIndex = prescriptions.findIndex(p => p.id === prescriptionId);
+        
+        if (prescriptionIndex === -1) {
+            console.error('Prescription not found');
+            return;
+        }
+        
+        const prescription = prescriptions[prescriptionIndex];
+        
+        // Update prescription status in doctor's list
+        prescription.status = 'Inactive';
+        
+        prescriptions[prescriptionIndex] = prescription;
+        currentUser.prescriptions = prescriptions;
+        
+        // Update in localStorage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        // Reload prescriptions
+        loadDoctorPrescriptions();
+    }
+    
     // Notification Functions
     function toggleNotificationDropdown() {
         notificationDropdown.classList.toggle('show');
@@ -921,4 +1163,63 @@ function acceptAppointment(appointmentId) {
     }
     
     updateAppointmentStatus(appointmentId, 'Accepted');
+}
+
+function viewPrescriptionDetails(prescriptionId) {
+    // Get current user
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) return;
+    
+    // Find prescription in doctor's list
+    const prescriptions = currentUser.prescriptions || [];
+    const prescriptionIndex = prescriptions.findIndex(p => p.id === prescriptionId);
+    
+    if (prescriptionIndex === -1) {
+        alert('Prescription not found');
+        return;
+    }
+    
+    const prescription = prescriptions[prescriptionIndex];
+    
+    // Create a prescription details modal and display it
+    const modalContent = `
+    <div class="modal" id="prescriptionDetailsModal" style="display: block;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 class="modal-title">Prescription Details</h2>
+            <div class="prescription-info-container">
+                <div class="prescription-profile">
+                    <div class="prescription-avatar-large">${getInitials(prescription.patientName)}</div>
+                    <div class="prescription-id">ID: ${prescriptionId}</div>
+                </div>
+                <div class="prescription-details">
+                    <h3>Prescription Information</h3>
+                    <div class="prescription-detail">
+                        <i class="fas fa-stethoscope"></i>
+                        <span>Medicine: ${prescription.medicine}</span>
+                    </div>
+                    <div class="prescription-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Dosage: ${prescription.dosage}</span>
+                    </div>
+                    <div class="prescription-detail">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Date: ${formatDate(prescription.date)}</span>
+                    </div>
+                    <div class="prescription-detail">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Status: ${prescription.status}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+    
+    // Create a temporary container
+    const tempContainer = document.createElement('div');
+    tempContainer.innerHTML = modalContent;
+    
+    // Append to body
+    document.body.appendChild(tempContainer.firstChild);
 }

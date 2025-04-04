@@ -79,6 +79,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Add event listeners for sidebar navigation
+    document.getElementById('dashboard-link')?.addEventListener('click', function() {
+        // Show all sections
+        document.querySelectorAll('.dashboard-content > div').forEach(section => {
+            section.style.display = 'block';
+        });
+        
+        // Update active menu item
+        updateActiveMenuItem(this);
+    });
+    
+    document.getElementById('appointments-link')?.addEventListener('click', function() {
+        // Hide all sections first
+        document.querySelectorAll('.dashboard-content > div').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Show only the appointments section
+        document.querySelector('.appointments').style.display = 'block';
+        
+        // Update active menu item
+        updateActiveMenuItem(this);
+    });
+    
+    document.getElementById('doctors-link')?.addEventListener('click', function() {
+        // Hide all sections first
+        document.querySelectorAll('.dashboard-content > div').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Show only the doctors section
+        document.querySelector('.doctors').style.display = 'block';
+        
+        // Update active menu item
+        updateActiveMenuItem(this);
+    });
+    
+    document.getElementById('prescriptions-link')?.addEventListener('click', function() {
+        // Hide all sections first
+        document.querySelectorAll('.dashboard-content > div').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Show only the prescriptions section
+        document.querySelector('.prescriptions-section').style.display = 'block';
+        
+        // Update active menu item
+        updateActiveMenuItem(this);
+    });
+    
+    // Helper function to update active menu item
+    function updateActiveMenuItem(activeItem) {
+        // Remove active class from all menu items
+        document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        // Add active class to clicked menu item
+        activeItem.classList.add('active');
+    }
+    
     // Functions
     function initializePage() {
         // Set user information
@@ -101,6 +162,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Load appointments
         loadAppointments();
+        
+        // Load prescriptions
+        loadPrescriptions();
         
         // Update dashboard counts
         updateDashboardCounts();
@@ -436,29 +500,49 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function loadNotifications() {
-        if (!notificationContent || !notificationBadge) return;
+        if (!notificationContent) return;
         
-        // Get current user's appointments
+        // Initialize notifications array in user data if it doesn't exist
+        if (!currentUser.notifications) {
+            currentUser.notifications = [];
+        }
+        
+        // Get prescription notifications
+        const prescriptions = currentUser.prescriptions || [];
+        const unviewedPrescriptions = prescriptions.filter(p => p.status === 'new');
+        
+        // Add prescription notifications if they don't already exist
+        unviewedPrescriptions.forEach(prescription => {
+            const notificationExists = currentUser.notifications.some(
+                n => n.type === 'prescription' && n.id === prescription.id
+            );
+            
+            if (!notificationExists) {
+                currentUser.notifications.push({
+                    id: generateId(),
+                    type: 'prescription',
+                    prescriptionId: prescription.id,
+                    message: `New prescription from ${prescription.doctorName}`,
+                    date: new Date().toISOString(),
+                    read: false
+                });
+            }
+        });
+        
+        // Get appointment notifications
         const appointments = currentUser.appointments || [];
-        
-        // Filter upcoming appointments for notifications
-        const upcomingAppointments = appointments.filter(appointment => 
-            appointment.status === 'Upcoming'
-        );
+        const upcomingAppointments = appointments.filter(a => a.status === 'Upcoming');
         
         // Sort by date (most recent first)
         upcomingAppointments.sort((a, b) => new Date(a.date) - new Date(b.date));
         
-        // Update notification badge count
-        const notificationCount = upcomingAppointments.length;
-        notificationBadge.textContent = notificationCount;
+        // Update notification badge
+        let unreadCount = currentUser.notifications.filter(notification => !notification.read).length;
+        notificationBadge.textContent = unreadCount;
+        notificationBadge.style.display = unreadCount > 0 ? 'flex' : 'none';
         
-        // Show/hide badge based on count
-        if (notificationCount === 0) {
-            notificationBadge.style.display = 'none';
-        } else {
-            notificationBadge.style.display = 'flex';
-        }
+        // Update local storage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
         
         // Generate notification items HTML
         if (upcomingAppointments.length === 0) {
@@ -738,4 +822,206 @@ function cancelAppointment(appointmentId) {
     }
     
     alert('Appointment cancelled successfully');
+}
+
+// Prescription functions
+function loadPrescriptions() {
+    const prescriptionCardsContainer = document.getElementById('prescriptionCards');
+    if (!prescriptionCardsContainer) {
+        console.error('Prescription cards container not found');
+        return;
+    }
+    
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) return;
+    
+    // Initialize prescriptions array if it doesn't exist
+    if (!currentUser.prescriptions) {
+        currentUser.prescriptions = [
+            // Sample prescription data - will be replaced with actual data
+            {
+                id: 'prescription123',
+                doctorId: 'doctor1',
+                doctorName: 'Dr. Sarah Johnson',
+                specialty: 'Cardiologist',
+                title: 'Blood Pressure Medication',
+                notes: 'Take twice daily with food',
+                date: '2025-04-02T10:30:00',
+                status: 'new',
+                pdfUrl: 'prescriptions/prescription123.pdf'
+            },
+            {
+                id: 'prescription124',
+                doctorId: 'doctor2',
+                doctorName: 'Dr. James Henderson',
+                specialty: 'General Physician',
+                title: 'Antibiotic Treatment',
+                notes: 'Take three times daily after meals for 7 days',
+                date: '2025-03-15T14:00:00',
+                status: 'viewed',
+                pdfUrl: 'prescriptions/prescription124.pdf'
+            }
+        ];
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+    
+    console.log('Loading prescriptions:', currentUser.prescriptions);
+    
+    // Get active filter
+    const activeFilter = document.querySelector('.prescriptions-section .filter-btn.active');
+    const filterValue = activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+    
+    // Filter prescriptions based on active filter
+    let filteredPrescriptions = [...currentUser.prescriptions];
+    if (filterValue === 'new') {
+        filteredPrescriptions = filteredPrescriptions.filter(p => p.status === 'new');
+    } else if (filterValue === 'viewed') {
+        filteredPrescriptions = filteredPrescriptions.filter(p => p.status === 'viewed');
+    }
+    
+    // Sort prescriptions by date (newest first)
+    filteredPrescriptions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    // Generate HTML for prescriptions
+    let prescriptionsHTML = '';
+    
+    if (filteredPrescriptions.length === 0) {
+        prescriptionsHTML = '<div class="no-data-message">No prescriptions found</div>';
+    } else {
+        filteredPrescriptions.forEach(prescription => {
+            const date = new Date(prescription.date);
+            const formattedDate = date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            
+            prescriptionsHTML += `
+            <div class="prescription-card">
+                <div class="prescription-header">
+                    <div class="prescription-date">${formattedDate}</div>
+                    <div class="prescription-status ${prescription.status}">${prescription.status === 'new' ? 'New' : 'Viewed'}</div>
+                </div>
+                <div class="prescription-body">
+                    <div class="doctor-info">
+                        <div class="avatar">${getInitials(prescription.doctorName)}</div>
+                        <div class="doctor-details">
+                            <div class="doctor-name">${prescription.doctorName}</div>
+                            <div class="doctor-specialty">${prescription.specialty}</div>
+                        </div>
+                    </div>
+                    <div class="prescription-details">
+                        <div class="prescription-title">${prescription.title}</div>
+                        <div class="prescription-notes">${prescription.notes}</div>
+                    </div>
+                </div>
+                <div class="prescription-actions">
+                    <button class="btn-primary view-prescription" onclick="viewPrescription('${prescription.id}')">
+                        <i class="fas fa-file-pdf"></i> View PDF
+                    </button>
+                    <button class="btn-secondary download-prescription" onclick="downloadPrescription('${prescription.id}')">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+            `;
+        });
+    }
+    
+    prescriptionCardsContainer.innerHTML = prescriptionsHTML;
+    
+    // Add event listeners for prescription filter buttons
+    const prescriptionFilterButtons = document.querySelectorAll('.prescriptions-section .filter-btn');
+    if (prescriptionFilterButtons) {
+        prescriptionFilterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                prescriptionFilterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Reload prescriptions with filter
+                loadPrescriptions();
+            });
+        });
+    }
+}
+
+// Global prescription functions
+function viewPrescription(prescriptionId) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser || !currentUser.prescriptions) return;
+    
+    // Find the prescription
+    const prescription = currentUser.prescriptions.find(p => p.id === prescriptionId);
+    if (!prescription) {
+        alert('Prescription not found');
+        return;
+    }
+    
+    // Mark prescription as viewed
+    prescription.status = 'viewed';
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    
+    // Remove notification for this prescription
+    if (currentUser.notifications) {
+        currentUser.notifications = currentUser.notifications.filter(n => 
+            !(n.type === 'prescription' && n.prescriptionId === prescriptionId)
+        );
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        // Update notification badge
+        const notificationBadge = document.getElementById('notificationBadge');
+        if (notificationBadge) {
+            const unreadCount = currentUser.notifications.filter(n => !n.read).length;
+            notificationBadge.textContent = unreadCount;
+            notificationBadge.style.display = unreadCount > 0 ? 'flex' : 'none';
+        }
+    }
+    
+    // Open prescription PDF in a new tab (in a real app, this would be a real PDF)
+    // For demo purposes, we'll show an alert
+    alert(`Viewing prescription: ${prescription.title}\nThis would open the prescription PDF in a real application.`);
+    
+    // Refresh the prescription list to show updated status
+    const loadPrescriptions = window.loadPrescriptions || function() {
+        console.log('Reloading prescriptions...');
+        location.reload();
+    };
+    loadPrescriptions();
+}
+
+function downloadPrescription(prescriptionId) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser || !currentUser.prescriptions) return;
+    
+    // Find the prescription
+    const prescription = currentUser.prescriptions.find(p => p.id === prescriptionId);
+    if (!prescription) {
+        alert('Prescription not found');
+        return;
+    }
+    
+    // Mark prescription as viewed if it's new
+    if (prescription.status === 'new') {
+        prescription.status = 'viewed';
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+    
+    // In a real application, this would trigger a download of the PDF file
+    // For demo purposes, we'll show an alert
+    alert(`Downloading prescription: ${prescription.title}\nThis would download the prescription PDF in a real application.`);
+    
+    // Refresh the prescription list
+    const loadPrescriptions = window.loadPrescriptions || function() {
+        console.log('Reloading prescriptions...');
+        location.reload();
+    };
+    loadPrescriptions();
+}
+
+// Helper function to generate a unique ID
+function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
