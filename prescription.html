@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Prescription Generator</title>
+    <style>
+        :root {
+            --primary-color: #1a3c5a;
+            --secondary-color: #f0f7ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .input-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .prescription-preview {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .doctor-header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .doctor-info {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .patient-info {
+            background: var(--secondary-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .medication-entry {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .prohibitions-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ffe6e6;
+            border-radius: 8px;
+        }
+
+        .signature-box {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @media print {
+            .input-section, button {
+                display: none;
+            }
+            .prescription-preview {
+                box-shadow: none;
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="input-section">
+            <!-- Doctor Information Input -->
+            <div class="form-group">
+                <h2>Doctor Information</h2>
+                <input type="text" id="doctorName" placeholder="Doctor's Full Name" required>
+                <input type="text" id="doctorQualification" placeholder="Qualifications (e.g., MD, MBBS)" required>
+                <input type="text" id="doctorLicense" placeholder="Medical License Number" required>
+                <input type="text" id="doctorContact" placeholder="Clinic Address & Contact">
+            </div>
+
+            <!-- Patient Information -->
+            <div class="form-group">
+                <h2>Patient Information</h2>
+                <input type="text" id="patientName" placeholder="Patient Full Name" required>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <input type="number" id="patientAge" placeholder="Age" required>
+                    <select id="patientGender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <input type="date" id="consultDate" required>
+                </div>
+            </div>
+
+            <!-- Medications -->
+            <div class="form-group">
+                <h2>Medications</h2>
+                <div id="medicationsContainer">
+                    <div class="medication-entry">
+                        <input type="text" placeholder="Drug & Strength" class="med-name">
+                        <input type="text" placeholder="Dose (e.g., 500mg)" class="med-dose">
+                        <select class="med-frequency">
+                            <option value="OD">OD</option>
+                            <option value="BD">BD</option>
+                            <option value="TDS">TDS</option>
+                            <option value="QID">QID</option>
+                        </select>
+                        <input type="text" placeholder="Duration (e.g., 5/7)" class="med-duration">
+                    </div>
+                </div>
+                <button onclick="addMedication()">+ Add Medication</button>
+            </div>
+
+            <!-- Prohibitions & Instructions -->
+            <div class="form-group">
+                <h2>Prohibitions & Instructions</h2>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    <label><input type="checkbox" class="prohibition" value="Alcohol"> Avoid Alcohol</label>
+                    <label><input type="checkbox" class="prohibition" value="Driving"> Avoid Driving</label>
+                    <label><input type="checkbox" class="prohibition" value="Sun Exposure"> Avoid Sun</label>
+                    <label><input type="checkbox" class="prohibition" value="Heavy Meals"> Avoid Heavy Meals</label>
+                </div>
+                <textarea id="specialInstructions" placeholder="Special Instructions..." rows="3"></textarea>
+            </div>
+
+            <button onclick="generatePrescription()">Generate Prescription</button>
+        </div>
+
+        <div class="prescription-preview" id="previewSection"></div>
+    </div>
+
+    <script>
+        function addMedication() {
+            const container = document.getElementById('medicationsContainer');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'medication-entry';
+            newEntry.innerHTML = `
+                <input type="text" placeholder="Drug & Strength" class="med-name">
+                <input type="text" placeholder="Dose" class="med-dose">
+                <select class="med-frequency">
+                    <option value="OD">OD</option>
+                    <option value="BD">BD</option>
+                    <option value="TDS">TDS</option>
+                    <option value="QID">QID</option>
+                </select>
+                <input type="text" placeholder="Duration" class="med-duration">
+            `;
+            container.appendChild(newEntry);
+        }
+
+        function generatePrescription() {
+            const preview = document.getElementById('previewSection');
+            const prohibitions = Array.from(document.querySelectorAll('.prohibition:checked'))
+                                .map(el => el.value).join(', ');
+            
+            let medicationsHTML = '';
+            document.querySelectorAll('.medication-entry').forEach((entry, index) => {
+                const name = entry.querySelector('.med-name').value;
+                const dose = entry.querySelector('.med-dose').value;
+                const freq = entry.querySelector('.med-frequency').value;
+                const duration = entry.querySelector('.med-duration').value;
+
+                if(name) {
+                    medicationsHTML += `
+                        <div class="medication-entry">
+                            <div>${index + 1}. ${name}</div>
+                            <div>${dose}</div>
+                            <div>${freq}</div>
+                            <div>${duration} days</div>
+                        </div>
+                    `;
+                }
+            });
+
+            const prescriptionHTML = `
+                <div class="doctor-header">
+                    <div class="doctor-info">${document.getElementById('doctorName').value}</div>
+                    <div class="doctor-info">${document.getElementById('doctorQualification').value}</div>
+                    <div class="doctor-info">License No: ${document.getElementById('doctorLicense').value}</div>
+                    <div class="doctor-info">${document.getElementById('doctorContact').value}</div>
+                </div>
+
+                <div class="patient-info">
+                    <div><strong>Patient Name:</strong> ${document.getElementById('patientName').value}</div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 10px;">
+                        <div>Age: ${document.getElementById('patientAge').value}</div>
+                        <div>Gender: ${document.getElementById('patientGender').value}</div>
+                        <div>Date: ${document.getElementById('consultDate').value}</div>
+                    </div>
+                </div>
+
+                <h3>Prescribed Medications:</h3>
+                ${medicationsHTML}
+
+                <div class="prohibitions-section">
+                    <h4>Prohibitions:</h4>
+                    <div>${prohibitions}</div>
+                    <h4 style="margin-top: 10px;">Special Instructions:</h4>
+                    <div>${document.getElementById('specialInstructions').value}</div>
+                </div>
+
+                <div class="signature-box">
+                    <div style="border-top: 1px solid #000; width: 250px; display: inline-block; padding-top: 5px;">
+                        <div>${document.getElementById('doctorName').value}</div>
+                        <div>License No: ${document.getElementById('doctorLicense').value}</div>
+                        <div style="margin-top: 20px;">Stamp/Signature</div>
+                    </div>
+                </div>
+
+                <button onclick="window.print()">Print Prescription</button>
+            `;
+
+            preview.innerHTML = prescriptionHTML;
+        }
+
+        // Set default date
+        document.getElementById('consultDate').value = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
