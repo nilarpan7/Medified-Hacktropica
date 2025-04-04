@@ -33,10 +33,6 @@
                     <i class="fas fa-users"></i>
                     <span>Patients</span>
                 </div>
-                <div class="menu-item" id="prescriptions-link">
-                    <i class="fas fa-prescription-bottle-alt"></i>
-                    <span>Prescriptions</span>
-                </div>
                 <div class="menu-item" id="video-call-link">
                     <i class="fas fa-video"></i>
                     <span>Video Calls</span>
@@ -64,24 +60,10 @@
                     <i class="fas fa-search"></i>
                 </div>
                 <div class="top-bar-actions">
-                    <button class="notification-btn" id="notificationBtn">
+                    <button class="notification-btn">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge" id="notificationBadge">2</span>
+                        <span class="notification-badge">2</span>
                     </button>
-                    <!-- Notification Dropdown -->
-                    <div class="notification-dropdown" id="notificationDropdown">
-                        <div class="notification-header">
-                            <h3>Notifications</h3>
-                        </div>
-                        <div class="notification-content" id="notificationContent">
-                            <!-- Notifications will be loaded here by JavaScript -->
-                        </div>
-                    </div>
-                    <!-- Theme Toggle Button -->
-                    <div class="theme-toggle" id="themeToggle">
-                        <i class="fas fa-moon"></i>
-                        <i class="fas fa-sun"></i>
-                    </div>
                     <div class="user-dropdown">
                         <div class="avatar user-initials">DS</div>
                         <span class="user-name">Dr. Smith</span>
@@ -190,55 +172,6 @@
                     </div>
                 </div>
                 
-                <!-- Prescriptions Section -->
-                <div class="prescriptions-section" id="prescriptions">
-                    <div class="section-header">
-                        <h2><i class="fas fa-prescription-bottle-alt"></i> Prescriptions</h2>
-                        <div class="section-actions">
-                            <button class="btn-primary" id="createPrescriptionBtn">
-                                <i class="fas fa-plus"></i> Create New Prescription
-                            </button>
-                            <div class="filter-buttons">
-                                <button class="filter-btn active" data-filter="all">All</button>
-                                <button class="filter-btn" data-filter="recent">Recent</button>
-                                <button class="filter-btn" data-filter="older">Older</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Prescription Cards View -->
-                    <div class="prescription-cards" id="doctorPrescriptionCards">
-                        <!-- Sample prescription card - will be replaced by JavaScript -->
-                        <div class="prescription-card">
-                            <div class="prescription-header">
-                                <div class="prescription-date">Apr 2, 2025</div>
-                                <div class="prescription-status sent">Sent</div>
-                            </div>
-                            <div class="prescription-body">
-                                <div class="patient-info">
-                                    <div class="avatar">JD</div>
-                                    <div class="patient-details">
-                                        <div class="patient-name">John Doe</div>
-                                        <div class="patient-email">john@example.com</div>
-                                    </div>
-                                </div>
-                                <div class="prescription-details">
-                                    <div class="prescription-title">Blood Pressure Medication</div>
-                                    <div class="prescription-notes">Take twice daily with food</div>
-                                </div>
-                            </div>
-                            <div class="prescription-actions">
-                                <button class="btn-primary view-prescription" onclick="viewDoctorPrescription('prescription123')">
-                                    <i class="fas fa-file-pdf"></i> View PDF
-                                </button>
-                                <button class="btn-secondary edit-prescription" onclick="editPrescription('prescription123')">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
                 <!-- Video Call Section -->
                 <div class="video-call-section" id="video-call">
                     <h2>Video Consultations</h2>
@@ -246,7 +179,9 @@
                     
                     <div class="video-call-actions">
                         <button class="btn-primary" id="startVideoCall">
+                            <a href="WEB_UIKITS.html">
                             <i class="fas fa-video"></i> Start New Call
+                        </a>
                         </button>
                         <button class="btn-secondary" id="joinVideoCall">
                             <i class="fas fa-sign-in-alt"></i> Join Existing Call

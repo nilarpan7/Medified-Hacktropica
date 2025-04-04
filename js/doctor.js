@@ -140,6 +140,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Navigation event listeners
+    document.getElementById('appointments-link')?.addEventListener('click', function() {
+        // Hide all sections first
+        document.querySelectorAll('.dashboard-content > div').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Show only the appointments section
+        document.querySelector('.appointments').style.display = 'block';
+        
+        // Load appointments when this section is shown
+        loadAppointments('all');
+        
+        // Update active menu item
+        updateActiveMenuItem(this);
+    });
+    
     // Functions
     function initializePage() {
         // Set user name and initials
