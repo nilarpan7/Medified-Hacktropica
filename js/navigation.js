@@ -80,9 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (profileLink) {
         profileLink.addEventListener('click', function() {
             if (currentUser.userType === 'patient') {
-                window.location.href = 'profile.html';
+                window.location.href = 'patient-profile.html';
             } else if (currentUser.userType === 'doctor') {
-                window.location.href = 'profile.html';
+                window.location.href = 'doctor-profile.html';
             }
         });
     }
@@ -97,6 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Handle notification badge visibility
     updateNotificationBadge();
+    
+    // Theme Toggle Functionality
+    setupThemeToggle();
 });
 
 // Function to update notification badges
@@ -119,4 +122,46 @@ function updateNotificationBadge() {
             badge.style.display = 'none';
         }
     });
+}
+
+// Function to set up theme toggle
+function setupThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+    
+    // Load user's theme preference from localStorage or use system preference
+    loadThemePreference();
+    
+    // Add click event to toggle theme
+    themeToggle.addEventListener('click', function() {
+        toggleTheme();
+    });
+}
+
+// Function to toggle between light and dark themes
+function toggleTheme() {
+    if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// Function to load theme preference from localStorage
+function loadThemePreference() {
+    const savedTheme = localStorage.getItem('theme');
+    
+    if (savedTheme) {
+        // Use saved preference
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+        // Check if user prefers dark mode in their OS settings
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    }
 }

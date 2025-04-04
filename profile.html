@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile | MEDIFIED AI</title>
+    <title>User Profile | MedConnect</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -18,7 +18,7 @@
             <div class="user-info">
                 <div class="avatar user-initials">JD</div>
                 <h3 class="user-name">John Doe</h3>
-                <p class="user-email">john@example.com</p>
+                <p class="user-type">User</p>
             </div>
             <nav class="sidebar-menu">
                 <div class="menu-item" id="dashboard-link">
@@ -29,9 +29,19 @@
                     <i class="fas fa-calendar-check"></i>
                     <span>Appointments</span>
                 </div>
-                <div class="menu-item" id="doctors-link">
+                <!-- Doctor-specific menu items -->
+                <div class="menu-item doctor-specific" id="patients-link">
+                    <i class="fas fa-users"></i>
+                    <span>Patients</span>
+                </div>
+                <!-- Patient-specific menu items -->
+                <div class="menu-item patient-specific" id="doctors-link">
                     <i class="fas fa-user-md"></i>
                     <span>Find Doctors</span>
+                </div>
+                <div class="menu-item patient-specific" id="prescriptions-link">
+                    <i class="fas fa-prescription"></i>
+                    <span>Prescriptions</span>
                 </div>
                 <div class="menu-item" id="video-call-link">
                     <i class="fas fa-video"></i>
@@ -61,6 +71,11 @@
                         <i class="fas fa-bell"></i>
                         <span class="notification-badge">3</span>
                     </button>
+                    <!-- Theme Toggle Button -->
+                    <div class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </div>
                     <div class="user-dropdown">
                         <div class="avatar user-initials">JD</div>
                         <span class="user-name">John Doe</span>
@@ -74,39 +89,108 @@
                     <div class="profile-header">
                         <div class="profile-avatar user-initials">JD</div>
                         <h2 class="user-name">John Doe</h2>
-                        <p class="user-email">john@example.com</p>
-                        <p class="user-type-display">Patient</p>
+                        <p class="user-email">johndoe@example.com</p>
+                        <p class="user-type-display">User</p>
                     </div>
                     
+                    <!-- Profile Tabs -->
                     <div class="profile-tabs">
                         <div class="profile-tab active" data-tab="personal">Personal Information</div>
-                        <div class="profile-tab" data-tab="medical">Medical History</div>
+                        <!-- Doctor-specific tab -->
+                        <div class="profile-tab doctor-specific" data-tab="medical">Professional Details</div>
+                        <!-- Patient-specific tab -->
+                        <div class="profile-tab patient-specific" data-tab="medical">Medical History</div>
+                        <div class="profile-tab patient-specific" data-tab="appointments">Appointment History</div>
                         <div class="profile-tab" data-tab="security">Security Settings</div>
                     </div>
                     
                     <div class="profile-content">
                         <!-- Personal Information Tab -->
                         <div class="profile-content-tab active" id="personal-tab">
-                            <form id="personalInfoForm">
+                            <!-- Doctor Personal Information Form -->
+                            <form id="doctorInfoForm" class="doctor-specific">
                                 <div class="form-group">
-                                    <label for="profileName">Full Name</label>
-                                    <input type="text" id="profileName" value="John Doe">
+                                    <label for="doctorProfileName">Full Name</label>
+                                    <input type="text" id="doctorProfileName" placeholder="Enter your full name">
                                 </div>
                                 <div class="form-group">
-                                    <label for="profileEmail">Email Address</label>
-                                    <input type="email" id="profileEmail" value="john@example.com">
+                                    <label for="doctorProfileEmail">Email</label>
+                                    <input type="email" id="doctorProfileEmail" placeholder="Enter your email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="profilePhone">Phone Number</label>
-                                    <input type="tel" id="profilePhone" placeholder="Enter your phone number">
+                                    <label for="doctorProfilePhone">Phone Number</label>
+                                    <input type="tel" id="doctorProfilePhone" placeholder="Enter your phone number">
                                 </div>
                                 <div class="form-group">
-                                    <label for="profileDob">Date of Birth</label>
-                                    <input type="date" id="profileDob">
+                                    <label for="doctorProfileDob">Date of Birth</label>
+                                    <input type="date" id="doctorProfileDob">
                                 </div>
                                 <div class="form-group">
-                                    <label for="profileGender">Gender</label>
-                                    <select id="profileGender">
+                                    <label for="doctorProfileGender">Gender</label>
+                                    <select id="doctorProfileGender">
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="doctorProfileAddress">Office Address</label>
+                                    <textarea id="doctorProfileAddress" rows="3" placeholder="Enter your office address"></textarea>
+                                </div>
+                                
+                                <!-- Doctor-specific fields -->
+                                <div id="doctorProfileFields">
+                                    <div class="form-group">
+                                        <label for="doctorProfileSpecialization">Specialization</label>
+                                        <select id="doctorProfileSpecialization">
+                                            <option value="">Select Specialization</option>
+                                            <option value="cardiology">Cardiology</option>
+                                            <option value="dermatology">Dermatology</option>
+                                            <option value="neurology">Neurology</option>
+                                            <option value="orthopedics">Orthopedics</option>
+                                            <option value="pediatrics">Pediatrics</option>
+                                            <option value="psychiatry">Psychiatry</option>
+                                            <option value="general">General Physician</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="doctorProfileExperience">Years of Experience</label>
+                                        <input type="number" id="doctorProfileExperience" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="doctorProfileBio">Professional Bio</label>
+                                        <textarea id="doctorProfileBio" rows="4" placeholder="Write about your professional experience"></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-actions">
+                                    <button type="button" class="profile-action-btn cancel-btn">Cancel</button>
+                                    <button type="submit" class="profile-action-btn save-profile-btn">Save Changes</button>
+                                </div>
+                            </form>
+                            
+                            <!-- Patient Personal Information Form -->
+                            <form id="patientInfoForm" class="patient-specific">
+                                <div class="form-group">
+                                    <label for="patientProfileName">Full Name</label>
+                                    <input type="text" id="patientProfileName" placeholder="Enter your full name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="patientProfileEmail">Email</label>
+                                    <input type="email" id="patientProfileEmail" placeholder="Enter your email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="patientProfilePhone">Phone Number</label>
+                                    <input type="tel" id="patientProfilePhone" placeholder="Enter your phone number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="patientProfileDob">Date of Birth</label>
+                                    <input type="date" id="patientProfileDob">
+                                </div>
+                                <div class="form-group">
+                                    <label for="patientProfileGender">Gender</label>
+                                    <select id="patientProfileGender">
                                         <option value="">Select Gender</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
@@ -115,33 +199,30 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="profileAddress">Address</label>
-                                    <textarea id="profileAddress" rows="3" placeholder="Enter your address"></textarea>
+                                    <label for="patientProfileAddress">Address</label>
+                                    <textarea id="patientProfileAddress" rows="3" placeholder="Enter your address"></textarea>
                                 </div>
-                                
-                                <!-- Doctor-specific fields -->
-                                <div id="doctorProfileFields" style="display: none;">
-                                    <div class="form-group">
-                                        <label for="profileSpecialization">Specialization</label>
-                                        <select id="profileSpecialization">
-                                            <option value="">Select Specialization</option>
-                                            <option value="Cardiologist">Cardiologist</option>
-                                            <option value="Dermatologist">Dermatologist</option>
-                                            <option value="Neurologist">Neurologist</option>
-                                            <option value="Pediatrician">Pediatrician</option>
-                                            <option value="Psychiatrist">Psychiatrist</option>
-                                            <option value="Orthopedic">Orthopedic</option>
-                                            <option value="General Physician">General Physician</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profileExperience">Years of Experience</label>
-                                        <input type="number" id="profileExperience" min="0">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profileBio">Professional Bio</label>
-                                        <textarea id="profileBio" rows="4" placeholder="Write about your professional experience"></textarea>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="patientProfileEmergencyContact">Emergency Contact Name</label>
+                                    <input type="text" id="patientProfileEmergencyContact" placeholder="Name of emergency contact">
+                                </div>
+                                <div class="form-group">
+                                    <label for="patientProfileEmergencyPhone">Emergency Contact Phone</label>
+                                    <input type="tel" id="patientProfileEmergencyPhone" placeholder="Phone number of emergency contact">
+                                </div>
+                                <div class="form-group">
+                                    <label for="patientProfileBloodType">Blood Type</label>
+                                    <select id="patientProfileBloodType">
+                                        <option value="">Select Blood Type</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
                                 </div>
                                 
                                 <div class="profile-actions">
@@ -151,13 +232,52 @@
                             </form>
                         </div>
                         
-                        <!-- Medical History Tab -->
+                        <!-- Medical Tab - Different content for doctor and patient -->
                         <div class="profile-content-tab" id="medical-tab">
-                            <!-- Patient-specific content -->
-                            <div id="patientMedicalContent">
+                            <!-- Doctor Professional Information -->
+                            <div id="doctorMedicalContent" class="doctor-specific">
+                                <h3>Professional Details</h3>
+                                <div class="form-group">
+                                    <label for="doctorSpecialization">Primary Specialization</label>
+                                    <select id="doctorSpecialization">
+                                        <option value="">Select Primary Specialization</option>
+                                        <option value="cardiology">Cardiology</option>
+                                        <option value="dermatology">Dermatology</option>
+                                        <option value="neurology">Neurology</option>
+                                        <option value="orthopedics">Orthopedics</option>
+                                        <option value="pediatrics">Pediatrics</option>
+                                        <option value="psychiatry">Psychiatry</option>
+                                        <option value="general">General Physician</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="specialties">Additional Specialties</label>
+                                    <textarea id="specialties" rows="3" placeholder="List any additional specialties or subspecialties"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="services">Services Offered</label>
+                                    <textarea id="services" rows="3" placeholder="List the services you offer"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="certifications">Certifications & Education</label>
+                                    <textarea id="certifications" rows="3" placeholder="List your certifications, degrees, and educational background"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="consultationFee">Consultation Fee (in $)</label>
+                                    <input type="number" id="consultationFee" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="availableHours">Available Hours</label>
+                                    <textarea id="availableHours" rows="3" placeholder="Describe your availability (e.g., Mon-Fri: 9 AM - 5 PM)"></textarea>
+                                </div>
+                                <div class="profile-actions">
+                                    <button type="button" class="profile-action-btn save-profile-btn">Save Professional Information</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Patient Medical History -->
+                            <div id="patientMedicalContent" class="patient-specific">
                                 <h3>Medical History</h3>
-                                <p>Add and manage your medical history information.</p>
-                                
                                 <div class="form-group">
                                     <label for="allergies">Allergies</label>
                                     <textarea id="allergies" rows="3" placeholder="List any allergies you have"></textarea>
@@ -174,51 +294,76 @@
                                     <label for="surgeries">Previous Surgeries</label>
                                     <textarea id="surgeries" rows="3" placeholder="List any previous surgeries and their dates"></textarea>
                                 </div>
+                                <div class="form-group">
+                                    <label for="familyHistory">Family Medical History</label>
+                                    <textarea id="familyHistory" rows="3" placeholder="Describe any significant medical conditions in your family"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vaccinations">Vaccination History</label>
+                                    <textarea id="vaccinations" rows="3" placeholder="List your vaccination history with dates"></textarea>
+                                </div>
                                 
                                 <div class="profile-actions">
                                     <button type="button" class="profile-action-btn save-profile-btn">Save Medical Information</button>
                                 </div>
                             </div>
-                            
-                            <!-- Doctor-specific content -->
-                            <div id="doctorMedicalContent" style="display: none;">
-                                <h3>Medical Specialties</h3>
-                                <p>Add and manage your medical specialties and services offered.</p>
-                                
-                                <div class="form-group">
-                                    <label for="doctorSpecialization">Primary Specialization</label>
-                                    <select id="doctorSpecialization" class="form-control">
-                                        <option value="">Select Specialization</option>
-                                        <option value="Cardiologist">Cardiologist</option>
-                                        <option value="Dermatologist">Dermatologist</option>
-                                        <option value="Neurologist">Neurologist</option>
-                                        <option value="Pediatrician">Pediatrician</option>
-                                        <option value="Psychiatrist">Psychiatrist</option>
-                                        <option value="Orthopedic">Orthopedic</option>
-                                        <option value="General Physician">General Physician</option>
-                                    </select>
+                        </div>
+                        
+                        <!-- Appointment History Tab - Patient specific -->
+                        <div class="profile-content-tab patient-specific" id="appointments-tab">
+                            <h3>Appointment History</h3>
+                            <div class="appointments-list">
+                                <div class="appointment-card">
+                                    <div class="appointment-header">
+                                        <div class="appointment-date">Mar 15, 2025</div>
+                                        <div class="appointment-status completed">Completed</div>
+                                    </div>
+                                    <div class="appointment-body">
+                                        <div class="doctor-info">
+                                            <div class="avatar">DS</div>
+                                            <div class="doctor-details">
+                                                <div class="doctor-name">Dr. Sarah Johnson</div>
+                                                <div class="doctor-specialty">Cardiologist</div>
+                                            </div>
+                                        </div>
+                                        <div class="appointment-time">10:00 AM - 10:30 AM</div>
+                                        <div class="appointment-notes">
+                                            <p>Regular checkup and blood pressure monitoring</p>
+                                        </div>
+                                    </div>
+                                    <div class="appointment-actions">
+                                        <button class="btn-sm view-prescription">View Prescription</button>
+                                        <button class="btn-sm book-follow-up">Book Follow-up</button>
+                                    </div>
                                 </div>
                                 
-                                <div class="form-group">
-                                    <label for="specialties">Additional Specialties</label>
-                                    <textarea id="specialties" rows="3" placeholder="List your additional medical specialties"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="services">Services Offered</label>
-                                    <textarea id="services" rows="3" placeholder="List services you offer to patients"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="certifications">Certifications</label>
-                                    <textarea id="certifications" rows="3" placeholder="List your medical certifications"></textarea>
-                                </div>
-                                
-                                <div class="profile-actions">
-                                    <button type="button" class="profile-action-btn save-profile-btn">Save Specialty Information</button>
+                                <div class="appointment-card">
+                                    <div class="appointment-header">
+                                        <div class="appointment-date">Feb 28, 2025</div>
+                                        <div class="appointment-status completed">Completed</div>
+                                    </div>
+                                    <div class="appointment-body">
+                                        <div class="doctor-info">
+                                            <div class="avatar">JH</div>
+                                            <div class="doctor-details">
+                                                <div class="doctor-name">Dr. James Henderson</div>
+                                                <div class="doctor-specialty">General Physician</div>
+                                            </div>
+                                        </div>
+                                        <div class="appointment-time">2:30 PM - 3:00 PM</div>
+                                        <div class="appointment-notes">
+                                            <p>Flu symptoms and prescription renewal</p>
+                                        </div>
+                                    </div>
+                                    <div class="appointment-actions">
+                                        <button class="btn-sm view-prescription">View Prescription</button>
+                                        <button class="btn-sm book-follow-up">Book Follow-up</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Security Settings Tab -->
+                        <!-- Security Settings Tab - Common for both -->
                         <div class="profile-content-tab" id="security-tab">
                             <h3>Change Password</h3>
                             <form id="changePasswordForm">
@@ -270,6 +415,15 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="form-group patient-specific">
+                                <div class="toggle-item">
+                                    <label for="medicationReminders">Medication Reminders</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="medicationReminders" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
                             
                             <div class="profile-actions">
                                 <button type="button" class="profile-action-btn save-profile-btn">Save Notification Settings</button>
@@ -283,5 +437,33 @@
 
     <script src="js/navigation.js"></script>
     <script src="js/profile.js"></script>
+    <script>
+        // Additional script to handle user type display
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (currentUser) {
+                // Set page title and header based on user type
+                const pageTitle = document.querySelector('.page-title');
+                if (pageTitle) {
+                    pageTitle.textContent = currentUser.userType === 'doctor' ? 'Doctor Profile' : 'Patient Profile';
+                }
+                
+                // Show/hide elements based on user type
+                const doctorElements = document.querySelectorAll('.doctor-specific');
+                const patientElements = document.querySelectorAll('.patient-specific');
+                
+                if (currentUser.userType === 'doctor') {
+                    // Show doctor elements, hide patient elements
+                    doctorElements.forEach(el => el.style.display = 'block');
+                    patientElements.forEach(el => el.style.display = 'none');
+                } else if (currentUser.userType === 'patient') {
+                    // Show patient elements, hide doctor elements
+                    doctorElements.forEach(el => el.style.display = 'none');
+                    patientElements.forEach(el => el.style.display = 'block');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

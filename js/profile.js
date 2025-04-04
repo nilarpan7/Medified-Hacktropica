@@ -9,22 +9,22 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    // DOM elements
+    // Determine which profile page we're on
+    const isPatientProfile = window.location.pathname.includes('profile.html');
+    const isDoctorProfile = window.location.pathname.includes('profile.html');
+    
+    // Common DOM elements
     const userNameElements = document.querySelectorAll('.user-name');
     const userEmailElement = document.querySelector('.user-email');
     const userInitialsElements = document.querySelectorAll('.user-initials');
     const userTypeDisplay = document.querySelector('.user-type-display');
     const profileTabs = document.querySelectorAll('.profile-tab');
     const profileContentTabs = document.querySelectorAll('.profile-content-tab');
-    const doctorProfileFields = document.getElementById('doctorProfileFields');
-    const patientMedicalContent = document.getElementById('patientMedicalContent');
-    const doctorMedicalContent = document.getElementById('doctorMedicalContent');
     
     // Forms
-    const personalInfoForm = document.getElementById('personalInfoForm');
     const changePasswordForm = document.getElementById('changePasswordForm');
     
-    // Initialize page
+    // Initialize page based on profile type
     initializePage();
     
     // Event Listeners
@@ -37,10 +37,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    if (personalInfoForm) {
-        personalInfoForm.addEventListener('submit', function(e) {
+    // Patient-specific form
+    const patientInfoForm = document.getElementById('patientInfoForm');
+    if (patientInfoForm) {
+        patientInfoForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            savePersonalInfo();
+            savePatientInfo();
+        });
+    }
+    
+    // Doctor-specific form
+    const doctorInfoForm = document.getElementById('doctorInfoForm');
+    if (doctorInfoForm) {
+        doctorInfoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveDoctorInfo();
         });
     }
     
@@ -74,24 +85,12 @@ document.addEventListener('DOMContentLoaded', function() {
             userTypeDisplay.textContent = currentUser.userType === 'patient' ? 'Patient' : 'Doctor';
         }
         
-        // Show/hide fields based on user type
-        if (currentUser.userType === 'doctor') {
-            if (doctorProfileFields) doctorProfileFields.style.display = 'block';
-            if (patientMedicalContent) patientMedicalContent.style.display = 'none';
-            if (doctorMedicalContent) doctorMedicalContent.style.display = 'block';
-            
-            // Fill doctor-specific fields
-            document.getElementById('profileSpecialization').value = currentUser.specialization || '';
-            document.getElementById('profileExperience').value = currentUser.experience || '';
-            document.getElementById('profileBio').value = currentUser.bio || '';
-            
-            // Hide patient-specific menu item
-            const doctorsLink = document.getElementById('doctors-link');
-            if (doctorsLink) doctorsLink.style.display = 'none';
-        }
-        
         // Populate form fields
-        populateProfileForm();
+        if (isPatientProfile) {
+            populatePatientProfileForm();
+        } else if (isDoctorProfile) {
+            populateDoctorProfileForm();
+        }
     }
     
     function getInitials(name) {
@@ -108,9 +107,9 @@ document.addEventListener('DOMContentLoaded', function() {
             tab.classList.remove('active');
         });
         
-        // Add active class to clicked tab
-        const activeTab = document.querySelector(`.profile-tab[data-tab="${tabName}"]`);
-        if (activeTab) activeTab.classList.add('active');
+        // Add active class to selected tab
+        const selectedTab = document.querySelector(`.profile-tab[data-tab="${tabName}"]`);
+        if (selectedTab) selectedTab.classList.add('active');
         
         // Hide all content tabs
         profileContentTabs.forEach(tab => {
@@ -118,116 +117,70 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Show selected content tab
-        const activeContent = document.getElementById(`${tabName}-tab`);
-        if (activeContent) activeContent.classList.add('active');
+        const selectedContent = document.getElementById(`${tabName}-tab`);
+        if (selectedContent) selectedContent.classList.add('active');
     }
     
-    function populateProfileForm() {
-        // Populate common fields
-        if (document.getElementById('fullName')) {
-            document.getElementById('fullName').value = currentUser.name || '';
+    // Patient-specific functions
+    function populatePatientProfileForm() {
+        if (!isPatientProfile) return;
+        
+        // Populate personal information
+        document.getElementById('patientProfileName').value = currentUser.name || '';
+        document.getElementById('patientProfileEmail').value = currentUser.email || '';
+        document.getElementById('patientProfilePhone').value = currentUser.phone || '';
+        document.getElementById('patientProfileDob').value = currentUser.dob || '';
+        document.getElementById('patientProfileGender').value = currentUser.gender || '';
+        document.getElementById('patientProfileAddress').value = currentUser.address || '';
+        
+        // Populate patient-specific fields
+        if (currentUser.emergencyContact) {
+            document.getElementById('patientProfileEmergencyContact').value = currentUser.emergencyContact.name || '';
+            document.getElementById('patientProfileEmergencyPhone').value = currentUser.emergencyContact.phone || '';
         }
         
-        if (document.getElementById('email')) {
-            document.getElementById('email').value = currentUser.email || '';
+        document.getElementById('patientProfileBloodType').value = currentUser.bloodType || '';
+        
+        // Medical history
+        if (document.getElementById('allergies') && currentUser.medicalHistory) {
+            document.getElementById('allergies').value = currentUser.medicalHistory.allergies || '';
+            document.getElementById('medications').value = currentUser.medicalHistory.medications || '';
+            document.getElementById('conditions').value = currentUser.medicalHistory.conditions || '';
+            document.getElementById('surgeries').value = currentUser.medicalHistory.surgeries || '';
+            document.getElementById('familyHistory').value = currentUser.medicalHistory.familyHistory || '';
+            document.getElementById('vaccinations').value = currentUser.medicalHistory.vaccinations || '';
         }
         
-        if (document.getElementById('phone')) {
-            document.getElementById('phone').value = currentUser.phone || '';
-        }
-        
-        if (document.getElementById('address')) {
-            document.getElementById('address').value = currentUser.address || '';
-        }
-        
-        if (document.getElementById('dob')) {
-            document.getElementById('dob').value = currentUser.dob || '';
-        }
-        
-        // Show appropriate fields for user type
-        if (currentUser.userType === 'doctor') {
-            if (doctorProfileFields) {
-                doctorProfileFields.style.display = 'block';
-            }
+        // Notification settings
+        if (currentUser.notifications) {
+            document.getElementById('emailNotifications').checked = currentUser.notifications.email !== false;
+            document.getElementById('smsNotifications').checked = currentUser.notifications.sms === true;
+            document.getElementById('appointmentReminders').checked = currentUser.notifications.appointmentReminders !== false;
             
-            if (patientMedicalContent) {
-                patientMedicalContent.style.display = 'none';
-            }
-            
-            if (doctorMedicalContent) {
-                doctorMedicalContent.style.display = 'block';
-            }
-            
-            // Populate doctor-specific fields
-            if (document.getElementById('experience')) {
-                document.getElementById('experience').value = currentUser.experience || '';
-            }
-            
-            if (document.getElementById('license')) {
-                document.getElementById('license').value = currentUser.license || '';
-            }
-            
-            // Populate doctor specialization dropdown
-            if (document.getElementById('doctorSpecialization')) {
-                const specializationDropdown = document.getElementById('doctorSpecialization');
-                const currentSpecialization = currentUser.specialization || 'General Physician';
-                
-                // Find and select the matching option
-                for (let i = 0; i < specializationDropdown.options.length; i++) {
-                    if (specializationDropdown.options[i].value === currentSpecialization) {
-                        specializationDropdown.selectedIndex = i;
-                        break;
-                    }
-                }
+            if (document.getElementById('medicationReminders')) {
+                document.getElementById('medicationReminders').checked = currentUser.notifications.medicationReminders !== false;
             }
         }
-        
-        // Populate medical history (if patient)
-        if (currentUser.userType === 'patient') {
-            if (currentUser.medicalHistory) {
-                document.getElementById('allergies').value = currentUser.medicalHistory.allergies || '';
-                document.getElementById('medications').value = currentUser.medicalHistory.medications || '';
-                document.getElementById('conditions').value = currentUser.medicalHistory.conditions || '';
-                document.getElementById('surgeries').value = currentUser.medicalHistory.surgeries || '';
-            }
-        } else if (currentUser.userType === 'doctor') {
-            // Populate doctor specialties
-            if (currentUser.medicalSpecialties) {
-                document.getElementById('specialties').value = currentUser.medicalSpecialties.specialties || '';
-                document.getElementById('services').value = currentUser.medicalSpecialties.services || '';
-                document.getElementById('certifications').value = currentUser.medicalSpecialties.certifications || '';
-            }
-        }
-        
-        // Populate notification settings
-        document.getElementById('emailNotifications').checked = currentUser.notifications?.email ?? true;
-        document.getElementById('smsNotifications').checked = currentUser.notifications?.sms ?? false;
-        document.getElementById('appointmentReminders').checked = currentUser.notifications?.appointmentReminders ?? true;
     }
     
-    function savePersonalInfo() {
-        // Get form values
-        const name = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const dob = document.getElementById('dob').value;
-        const gender = document.getElementById('gender').value;
-        const address = document.getElementById('address').value;
+    function savePatientInfo() {
+        if (!isPatientProfile) return;
         
-        // Update current user object
-        currentUser.name = name;
-        currentUser.email = email;
-        currentUser.phone = phone;
-        currentUser.dob = dob;
-        currentUser.gender = gender;
-        currentUser.address = address;
+        // Update user object
+        currentUser.name = document.getElementById('patientProfileName').value;
+        currentUser.email = document.getElementById('patientProfileEmail').value;
+        currentUser.phone = document.getElementById('patientProfilePhone').value;
+        currentUser.dob = document.getElementById('patientProfileDob').value;
+        currentUser.gender = document.getElementById('patientProfileGender').value;
+        currentUser.address = document.getElementById('patientProfileAddress').value;
         
-        // Update doctor-specific fields
-        if (currentUser.userType === 'doctor') {
-            currentUser.specialization = document.getElementById('profileSpecialization').value;
-            currentUser.experience = document.getElementById('profileExperience').value;
-            currentUser.bio = document.getElementById('profileBio').value;
-        }
+        // Update emergency contact
+        currentUser.emergencyContact = {
+            name: document.getElementById('patientProfileEmergencyContact').value,
+            phone: document.getElementById('patientProfileEmergencyPhone').value
+        };
+        
+        currentUser.bloodType = document.getElementById('patientProfileBloodType').value;
         
         // Save to localStorage
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -237,33 +190,99 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show success message
         alert('Profile information updated successfully!');
-        
-        // Update displayed name
-        userNameElements.forEach(element => {
-            element.textContent = name;
-        });
-        
-        // Update initials
-        const initials = getInitials(name);
-        userInitialsElements.forEach(element => {
-            element.textContent = initials;
-        });
     }
     
+    // Doctor-specific functions
+    function populateDoctorProfileForm() {
+        if (!isDoctorProfile) return;
+        
+        // Populate personal information
+        document.getElementById('doctorProfileName').value = currentUser.name || '';
+        document.getElementById('doctorProfileEmail').value = currentUser.email || '';
+        document.getElementById('doctorProfilePhone').value = currentUser.phone || '';
+        document.getElementById('doctorProfileDob').value = currentUser.dob || '';
+        document.getElementById('doctorProfileGender').value = currentUser.gender || '';
+        document.getElementById('doctorProfileAddress').value = currentUser.address || '';
+        
+        // Populate doctor-specific fields
+        document.getElementById('doctorProfileSpecialization').value = currentUser.specialization || '';
+        document.getElementById('doctorProfileExperience').value = currentUser.experience || '';
+        document.getElementById('doctorProfileBio').value = currentUser.bio || '';
+        
+        // Professional details tab
+        if (document.getElementById('doctorSpecialization')) {
+            document.getElementById('doctorSpecialization').value = currentUser.specialization || '';
+            
+            if (currentUser.medicalSpecialties) {
+                document.getElementById('specialties').value = currentUser.medicalSpecialties.specialties || '';
+                document.getElementById('services').value = currentUser.medicalSpecialties.services || '';
+                document.getElementById('certifications').value = currentUser.medicalSpecialties.certifications || '';
+            }
+            
+            if (currentUser.consultationFee) {
+                document.getElementById('consultationFee').value = currentUser.consultationFee;
+            }
+            
+            if (currentUser.availableHours) {
+                document.getElementById('availableHours').value = currentUser.availableHours;
+            }
+        }
+        
+        // Notification settings
+        if (currentUser.notifications) {
+            document.getElementById('emailNotifications').checked = currentUser.notifications.email !== false;
+            document.getElementById('smsNotifications').checked = currentUser.notifications.sms === true;
+            document.getElementById('appointmentReminders').checked = currentUser.notifications.appointmentReminders !== false;
+        }
+    }
+    
+    function saveDoctorInfo() {
+        if (!isDoctorProfile) return;
+        
+        // Update user object
+        currentUser.name = document.getElementById('doctorProfileName').value;
+        currentUser.email = document.getElementById('doctorProfileEmail').value;
+        currentUser.phone = document.getElementById('doctorProfilePhone').value;
+        currentUser.dob = document.getElementById('doctorProfileDob').value;
+        currentUser.gender = document.getElementById('doctorProfileGender').value;
+        currentUser.address = document.getElementById('doctorProfileAddress').value;
+        
+        // Update doctor-specific fields
+        currentUser.specialization = document.getElementById('doctorProfileSpecialization').value;
+        currentUser.experience = document.getElementById('doctorProfileExperience').value;
+        currentUser.bio = document.getElementById('doctorProfileBio').value;
+        
+        // Save to localStorage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        // Update user in users array
+        updateUserInArray();
+        
+        // Show success message
+        alert('Profile information updated successfully!');
+    }
+    
+    // Common functions
     function changePassword() {
         const currentPassword = document.getElementById('currentPassword').value;
         const newPassword = document.getElementById('newPassword').value;
         const confirmNewPassword = document.getElementById('confirmNewPassword').value;
         
-        // Validate current password
+        // Validate current password (for a real app, would check against backend)
         if (currentPassword !== currentUser.password) {
-            alert('Current password is incorrect.');
+            alert('Current password is incorrect');
             return;
         }
         
-        // Validate password match
+        // Validate new password
+        if (newPassword.length < 6) {
+            alert('New password must be at least 6 characters');
+            return;
+        }
+        
+        // Validate password confirmation
         if (newPassword !== confirmNewPassword) {
-            alert('New passwords do not match.');
+            alert('New passwords do not match');
             return;
         }
         
@@ -276,29 +295,30 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update user in users array
         updateUserInArray();
         
-        // Clear form and show success message
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmNewPassword').value = '';
+        // Clear form
+        document.getElementById('changePasswordForm').reset();
         
-        alert('Password updated successfully!');
+        // Show success message
+        alert('Password changed successfully!');
     }
     
     function updateUserInArray() {
-        // Get users array
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        
-        // Find and update user
-        const userIndex = users.findIndex(u => u.id === currentUser.id);
-        
-        if (userIndex !== -1) {
-            users[userIndex] = currentUser;
-            localStorage.setItem('users', JSON.stringify(users));
-        }
-        
-        // If doctor, also update in doctors array
-        if (currentUser.userType === 'doctor') {
+        if (currentUser.userType === 'patient') {
+            // Get patients array from localStorage
+            const patients = JSON.parse(localStorage.getItem('patients')) || [];
+            
+            // Find and update current user
+            const patientIndex = patients.findIndex(p => p.id === currentUser.id);
+            
+            if (patientIndex !== -1) {
+                patients[patientIndex] = currentUser;
+                localStorage.setItem('patients', JSON.stringify(patients));
+            }
+        } else if (currentUser.userType === 'doctor') {
+            // Get doctors array from localStorage
             const doctors = JSON.parse(localStorage.getItem('doctors')) || [];
+            
+            // Find and update current user
             const doctorIndex = doctors.findIndex(d => d.id === currentUser.id);
             
             if (doctorIndex !== -1) {
@@ -309,12 +329,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Add event listeners for medical history form
-    if (document.getElementById('patientMedicalContent')) {
+    if (isPatientProfile && document.getElementById('patientMedicalContent')) {
         document.querySelector('#patientMedicalContent .save-profile-btn').addEventListener('click', saveMedicalHistory);
     }
     
     // Add event listeners for doctor specialties form
-    if (document.getElementById('doctorMedicalContent')) {
+    if (isDoctorProfile && document.getElementById('doctorMedicalContent')) {
         document.querySelector('#doctorMedicalContent .save-profile-btn').addEventListener('click', saveDoctorSpecialties);
     }
     
@@ -334,6 +354,15 @@ document.addEventListener('DOMContentLoaded', function() {
         currentUser.medicalHistory.medications = document.getElementById('medications').value;
         currentUser.medicalHistory.conditions = document.getElementById('conditions').value;
         currentUser.medicalHistory.surgeries = document.getElementById('surgeries').value;
+        
+        // Add the new patient-specific fields
+        if (document.getElementById('familyHistory')) {
+            currentUser.medicalHistory.familyHistory = document.getElementById('familyHistory').value;
+        }
+        
+        if (document.getElementById('vaccinations')) {
+            currentUser.medicalHistory.vaccinations = document.getElementById('vaccinations').value;
+        }
         
         // Save to localStorage
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -362,6 +391,15 @@ document.addEventListener('DOMContentLoaded', function() {
         currentUser.medicalSpecialties.services = document.getElementById('services').value;
         currentUser.medicalSpecialties.certifications = document.getElementById('certifications').value;
         
+        // Update new doctor-specific fields
+        if (document.getElementById('consultationFee')) {
+            currentUser.consultationFee = document.getElementById('consultationFee').value;
+        }
+        
+        if (document.getElementById('availableHours')) {
+            currentUser.availableHours = document.getElementById('availableHours').value;
+        }
+        
         // Save to localStorage
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
         
@@ -369,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateUserInArray();
         
         // Show success message
-        alert('Specialty information updated successfully!');
+        alert('Professional information updated successfully!');
     }
     
     function saveNotificationSettings() {
@@ -382,6 +420,11 @@ document.addEventListener('DOMContentLoaded', function() {
         currentUser.notifications.email = document.getElementById('emailNotifications').checked;
         currentUser.notifications.sms = document.getElementById('smsNotifications').checked;
         currentUser.notifications.appointmentReminders = document.getElementById('appointmentReminders').checked;
+        
+        // Check for patient-specific notification settings
+        if (isPatientProfile && document.getElementById('medicationReminders')) {
+            currentUser.notifications.medicationReminders = document.getElementById('medicationReminders').checked;
+        }
         
         // Save to localStorage
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
