@@ -157,6 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateActiveMenuItem(this);
     });
     
+    
     // Functions
     function initializePage() {
         // Set user name and initials

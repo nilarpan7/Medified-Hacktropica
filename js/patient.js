@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('prescriptions-link')?.addEventListener('click', function() {
         // Hide all sections first
         document.querySelectorAll('.dashboard-content > div').forEach(section => {
-            section.style.display = 'none';
+            section.style.display = 'block';
         });
         
         // Show only the prescriptions section
@@ -528,7 +528,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
-        
+        document.getElementById('prescriptions-link')?.addEventListener('click', function() {
+            // Navigate to prescriptions page
+            window.location.href = 'prescriptions.html';
+            
+            // Update active menu item
+            updateActiveMenuItem(this);
+        });
         // Get appointment notifications
         const appointments = currentUser.appointments || [];
         const upcomingAppointments = appointments.filter(a => a.status === 'Upcoming');
