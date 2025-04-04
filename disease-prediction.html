@@ -3,334 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediScan - AI Disease Prediction</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>AI Disease Predictor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --accent: #fd79a8;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --danger: #d63031;
+            --primary: #7c4dff;
+            --secondary: #5e35b1;
+            --accent: #00e5ff;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #1e1e1e;
+            --lighter: #2a2a2a;
+            --text: #e0e0e0;
+            --text-light: #9e9e9e;
+            --success: #00c853;
+            --warning: #ffab00;
+            --danger: #ff5252;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-color: var(--darker);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            color: var(--dark);
+            padding: 20px;
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            display: inline-block;
-            position: relative;
-        }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: var(--dark);
-            opacity: 0.8;
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .prediction-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            transition: all 0.3s ease;
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .prediction-card.hidden {
-            transform: translateY(20px);
-            opacity: 0;
-        }
-
-        .card-header {
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .card-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .symptom-input {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .input-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #dfe6e9;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-        }
-
-        .suggestions {
-            position: absolute;
-            width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
-            background: white;
-            border: 1px solid #dfe6e9;
-            border-radius: 0 0 10px 10px;
-            z-index: 10;
-            display: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .suggestions.visible {
-            display: block;
-        }
-
-        .suggestion-item {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .suggestion-item:hover {
-            background: var(--light);
-        }
-
-        .selected-symptoms {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .symptom-tag {
-            background: var(--secondary);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .remove-tag {
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: transform 0.2s ease;
-        }
-
-        .remove-tag:hover {
-            transform: scale(1.2);
-        }
-
-        .submit-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 0 auto;
-        }
-
-        .submit-btn:hover {
-            background: #5649c0;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
-        }
-
-        .submit-btn:disabled {
-            background: #b2bec3;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 2rem 0;
-        }
-
-        .loading.visible {
-            display: block;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto 1rem;
-            border: 5px solid var(--secondary);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        .results {
-            display: none;
-            animation: slideUp 0.5s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .results.visible {
-            display: block;
-        }
-
-        .result-item {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .result-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .disease-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .confidence {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: var(--success);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .description {
-            color: var(--dark);
-            opacity: 0.8;
-            margin-bottom: 1rem;
-        }
-
-        .treatment {
-            font-size: 0.9rem;
-            color: var(--dark);
-            background: var(--light);
-            padding: 0.75rem;
-            border-radius: 8px;
-            margin-top: 0.5rem;
-        }
-
-        .treatment-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .floating-shapes {
+        .floating-particles {
             position: fixed;
             top: 0;
             left: 0;
@@ -341,267 +50,559 @@
             pointer-events: none;
         }
 
-        .shape {
+        .particle {
             position: absolute;
-            opacity: 0.1;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            animation: float 15s infinite linear;
+            background-color: rgba(124, 77, 255, 0.3);
+            animation: float-up 15s linear infinite;
         }
 
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--primary);
-            top: 20%;
-            left: -100px;
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background-color: var(--dark);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            border: 1px solid var(--lighter);
+            position: relative;
+            z-index: 1;
+            transform-style: preserve-3d;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 15px;
+            background: radial-gradient(circle, rgba(124, 77, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.98);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(1.05);
+                opacity: 0;
+            }
+        }
+
+        .header {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--dark), var(--lighter));
+            border-bottom: 1px solid var(--lighter);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+            animation: rainbow-border 8s linear infinite;
+            background-size: 200% auto;
+        }
+
+        @keyframes rainbow-border {
+            0% {
+                background-position: 0% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+            animation: pulse-text 2s infinite alternate;
+        }
+
+        @keyframes pulse-text {
+            0% {
+                text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+                transform: scale(1);
+            }
+            100% {
+                text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+                transform: scale(1.02);
+            }
+        }
+
+        .header p {
+            color: var(--text-light);
+            animation: fade-in 1s ease-out;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content {
+            padding: 30px;
+            animation: slide-up 0.8s ease-out;
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #symptomsInput {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin: 10px 0;
+            background-color: var(--light);
+            color: var(--text);
+            animation: input-focus 3s infinite alternate;
+        }
+
+        @keyframes input-focus {
+            0% {
+                box-shadow: 0 0 0 0 rgba(124, 77, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 5px rgba(124, 77, 255, 0.1);
+            }
+        }
+
+        #symptomsInput:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.2);
+            animation: none;
+        }
+
+        button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+            display: block;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(124, 77, 255, 0.4);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        button:hover::after {
+            left: 100%;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 10px;
+            border-left: 4px solid var(--success);
+            display: none;
+            animation: cardAppear 0.6s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) rotateX(45deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        #result:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #result strong {
+            color: var(--accent);
+            display: inline-block;
+            position: relative;
+        }
+
+        #result strong::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        #result:hover strong::after {
+            transform: scaleX(1);
+        }
+
+        #loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .dna-helix {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            transform-style: preserve-3d;
+        }
+
+        .helix {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background-color: var(--primary);
+            left: 50%;
+            animation: spin 3s linear infinite;
+            transform-origin: center;
+        }
+
+        .helix:nth-child(2) {
+            left: calc(50% + 20px);
+            animation: spin 3s linear infinite reverse;
+        }
+
+        .nucleotides {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .nucleotide {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            animation: float 3s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        .nucleotide.a {
+            background-color: var(--danger);
+            top: 10%;
+            left: 30%;
             animation-delay: 0s;
         }
-
-        .shape-2 {
-            width: 200px;
-            height: 200px;
-            background: var(--accent);
-            bottom: 10%;
-            right: -50px;
-            animation-delay: 3s;
+        .nucleotide.t {
+            background-color: var(--warning);
+            top: 30%;
+            right: 20%;
+            animation-delay: 0.5s;
         }
-
-        .shape-3 {
-            width: 150px;
-            height: 150px;
-            background: var(--success);
-            top: 60%;
-            left: 30%;
-            animation-delay: 6s;
+        .nucleotide.c {
+            background-color: var(--accent);
+            bottom: 40%;
+            left: 25%;
+            animation-delay: 1s;
+        }
+        .nucleotide.g {
+            background-color: var(--success);
+            bottom: 20%;
+            right: 30%;
+            animation-delay: 1.5s;
         }
 
         @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(50px, 50px) rotate(90deg); }
-            50% { transform: translate(100px, 0) rotate(180deg); }
-            75% { transform: translate(50px, -50px) rotate(270deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
+            0%, 100% { transform: translate(0, 0) scale(1) rotateY(0deg); }
+            25% { transform: translate(5px, 10px) scale(1.1) rotateY(90deg); }
+            50% { transform: translate(10px, 0) scale(1) rotateY(180deg); }
+            75% { transform: translate(5px, -10px) scale(0.9) rotateY(270deg); }
         }
 
-        .error-message {
+        #error-message {
             color: var(--danger);
-            background: rgba(214, 48, 49, 0.1);
-            padding: 1rem;
+            background: rgba(255, 82, 82, 0.1);
+            padding: 15px;
             border-radius: 10px;
-            margin-bottom: 1rem;
+            margin-top: 20px;
             display: none;
             animation: shake 0.5s ease;
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
-        .error-message.visible {
-            display: block;
+        .microscope-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: var(--accent);
+            animation: float-icon 4s ease-in-out infinite;
+        }
+
+        @keyframes float-icon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .pulse-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            animation: pulse-dot 1.5s infinite ease-in-out;
+        }
+
+        .pulse-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .pulse-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                border-radius: 10px;
             }
-
-            .logo {
-                font-size: 2rem;
+            
+            .header h2 {
+                font-size: 1.5rem;
             }
-
-            .card-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .shape-1, .shape-2, .shape-3 {
-                display: none;
+            
+            .content {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-    </div>
-
+    <div class="floating-particles" id="particles-container"></div>
+    
     <div class="container">
-        <header>
-            <div class="logo">MediScan</div>
-            <div class="tagline">AI-powered disease prediction from symptoms</div>
-        </header>
-
-        <main class="main-content">
-            <div class="error-message" id="error-message"></div>
-
-            <div class="prediction-card" id="input-card">
-                <div class="card-header">
-                    <div class="card-icon">🩺</div>
-                    <h2 class="card-title">Enter Your Symptoms</h2>
-                </div>
-
-                <div class="symptom-input">
-                    <label for="symptoms" class="input-label">Type your symptoms (comma separated):</label>
-                    <input type="text" id="symptoms" class="input-field" placeholder="e.g. fever, headache, cough">
-                    <div class="suggestions" id="suggestions"></div>
-                </div>
-
-                <div class="selected-symptoms" id="selected-symptoms"></div>
-
-                <button id="submit-btn" class="submit-btn" disabled>
-                    <span>Predict Disease</span>
-                    <span>🔍</span>
-                </button>
+        <div class="pulse-circle"></div>
+        <div class="header">
+            <i class="fas fa-microscope microscope-icon"></i>
+            <h2><i class="fas fa-heartbeat"></i> Disease Predictor</h2>
+            <p>AI-powered health analysis</p>
+        </div>
+        
+        <div class="content">
+            <input type="text" id="symptomsInput" placeholder="Enter symptoms (e.g., itching, skin_rash)" />
+            
+            <button onclick="predictDisease()">
+                <i class="fas fa-search"></i> Predict Disease
+            </button>
+            
+            <div class="pulse-dots">
+                <div class="pulse-dot"></div>
+                <div class="pulse-dot"></div>
+                <div class="pulse-dot"></div>
             </div>
-
-            <div class="loading" id="loading">
-                <div class="loader"></div>
-                <p>Analyzing symptoms and predicting possible diseases...</p>
-            </div>
-
-            <div class="prediction-card results" id="results">
-                <div class="card-header">
-                    <div class="card-icon">📋</div>
-                    <h2 class="card-title">Prediction Results</h2>
+            
+            <div id="loading">
+                <div class="dna-helix">
+                    <div class="helix"></div>
+                    <div class="helix"></div>
+                    <div class="nucleotides">
+                        <span class="nucleotide a">A</span>
+                        <span class="nucleotide t">T</span>
+                        <span class="nucleotide c">C</span>
+                        <span class="nucleotide g">G</span>
+                    </div>
                 </div>
-
-                <div id="results-container"></div>
+                <p>Analyzing your symptoms...</p>
             </div>
-        </main>
+            
+            <div id="error-message"></div>
+            
+            <div id="result" class="result"></div>
+        </div>
     </div>
 
     <script>
-        function init() {
-            setupEventListeners();
+    // Create floating particles
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles-container');
+        const particleCount = 20;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
             
-            // For testing purposes - simulate API response
-            window.simulateAPIResponse = function() {
-                const mockResponse = {
-                    predictions: [
-                        { disease: "fungal_infection", confidence: 0.85 },
-                        { disease: "allergy", confidence: 0.72 },
-                        { disease: "drug_reaction", confidence: 0.65 }
-                    ]
-                };
-                showResults(mockResponse.predictions);
-            };
+            const size = Math.random() * 6 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.bottom = `-${size}px`;
+            
+            const duration = Math.random() * 10 + 10;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            
+            particlesContainer.appendChild(particle);
         }
+    }
+    
+    // Initialize particles
+    createParticles();
+    
+    // Original JavaScript remains exactly the same
+    async function predictDisease() {
+      const symptoms = document.getElementById('symptomsInput').value;
+      const loading = document.getElementById('loading');
+      const resultDiv = document.getElementById('result');
+      const errorMessage = document.getElementById('error-message');
+      
+      // Hide previous results and errors
+      resultDiv.style.display = 'none';
+      errorMessage.style.display = 'none';
+      
+      if (!symptoms.trim()) {
+        errorMessage.textContent = "Please enter symptoms.";
+        errorMessage.style.display = 'block';
+        return;
+      }
+      
+      // Show loading
+      loading.style.display = 'flex';
+      
+      try {
+        const response = await fetch('https://human-disease-detector.p.rapidapi.com/human_disease/predict', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-rapidapi-key': '6250678c3cmsh32594f0ba200886p1c7ec2jsn24e32bfc2ca8',
+            'x-rapidapi-host': 'human-disease-detector.p.rapidapi.com',
+            'x-token': 'Makshad Nai Bhoolna @ 2025'
+          },
+          body: JSON.stringify({ symptoms })
+        });
 
-        // [Previous setupEventListeners, handleInput, showSuggestions, hideSuggestions, 
-        // selectSymptom, updateSelectedSymptoms, removeSymptom, updateSubmitButton,
-        // showLoading, hideLoading, showError functions remain the same]
-
-        // Predict disease from symptoms - UPDATED VERSION
-        async function predictDisease() {
-            if (selectedSymptoms.length === 0) return;
-            
-            showLoading();
-            
-            // For demo purposes, we'll use mock data if API fails
-            let apiSuccess = false;
-            
-            try {
-                // Try the actual API first
-                const apiResponse = await callDiseaseAPI(selectedSymptoms);
-                if (apiResponse.predictions && apiResponse.predictions.length > 0) {
-                    apiSuccess = true;
-                    showResults(apiResponse.predictions);
-                } else {
-                    showError("No predictions returned from API");
-                }
-            } catch (error) {
-                console.error("API Error:", error);
-                // If API fails, use mock data for demonstration
-                const mockResponse = {
-                    predictions: generateMockPredictions(selectedSymptoms)
-                };
-                showResults(mockResponse.predictions);
-                showError("API connection failed. Showing sample data for demonstration.");
-            }
-        }
-
-        // New function to call the disease API
-        function callDiseaseAPI(symptoms) {
-            return new Promise((resolve, reject) => {
-                const data = JSON.stringify({
-                    symptoms: symptoms.join(', ')
-                });
-
-                const xhr = new XMLHttpRequest();
-                xhr.withCredentials = true;
-
-                xhr.addEventListener('readystatechange', function() {
-                    if (this.readyState === this.DONE) {
-                        if (this.status >= 200 && this.status < 300) {
-                            try {
-                                const response = JSON.parse(this.responseText);
-                                resolve(response);
-                            } catch (e) {
-                                reject(new Error('Invalid JSON response'));
-                            }
-                        } else {
-                            reject(new Error(`API request failed with status ${this.status}`));
-                        }
-                    }
-                });
-
-                xhr.addEventListener('error', function() {
-                    reject(new Error('Network error'));
-                });
-
-                xhr.addEventListener('timeout', function() {
-                    reject(new Error('Request timeout'));
-                });
-
-                xhr.open('POST', 'https://human-disease-detector.p.rapidapi.com/human_disease/predict');
-                xhr.setRequestHeader('x-rapidapi-key', 'a63a48d41bmsh053b40b87283c6bp19b259jsnb61bc576058a');
-                xhr.setRequestHeader('x-rapidapi-host', 'human-disease-detector.p.rapidapi.com');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.setRequestHeader('x-token', 'Makshad Nai Bhoolna @ 2025');
-                
-                xhr.timeout = 8000; // 8 seconds timeout
-                xhr.send(data);
-            });
-        }
-
-        // Generate mock predictions based on symptoms
-        function generateMockPredictions(symptoms) {
-            // Simple mapping of symptoms to possible diseases
-            const symptomToDisease = {
-                'itching': ['fungal_infection', 'allergy', 'eczema'],
-                'skin_rash': ['fungal_infection', 'allergy', 'measles'],
-                'fever': ['typhoid', 'malaria', 'dengue'],
-                'headache': ['migraine', 'hypertension', 'common_cold'],
-                'cough': ['common_cold', 'pneumonia', 'tuberculosis']
-            };
-            
-            // Find matching diseases for symptoms
-            const possibleDiseases = [];
-            symptoms.forEach(symptom => {
-                if (symptomToDisease[symptom]) {
-                    possibleDiseases.push(...symptomToDisease[symptom]);
-                }
-            });
-            
-            // Remove duplicates
-            const uniqueDiseases = [...new Set(possibleDiseases)];
-            
-            // Generate mock predictions with random confidence
-            return uniqueDiseases.map(disease => ({
-                disease,
-                confidence: Math.random() * 0.5 + 0.5 // Random confidence between 0.5 and 1.0
-            })).sort((a, b) => b.confidence - a.confidence); // Sort by confidence
-        }
-
-        // [Previous showResults, getDiseaseDescription, getTreatmentAdvice functions remain the same]
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', init);
+        const data = await response.json();
+        
+        // Hide loading
+        loading.style.display = 'none';
+        
+        // Show result
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `<strong>Predicted Disease:</strong> ${data.disease || JSON.stringify(data)}`;
+      } catch (error) {
+        loading.style.display = 'none';
+        errorMessage.textContent = "An error occurred: " + error.message;
+        errorMessage.style.display = 'block';
+        console.error('Prediction error:', error);
+      }
+    }
     </script>
 </body>
 </html>
