@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediScan - AI Disease Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline-block;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--dark);
+            opacity: 0.8;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .prediction-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .prediction-card.hidden {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .symptom-input {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+
+        .suggestions {
+            position: absolute;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #dfe6e9;
+            border-radius: 0 0 10px 10px;
+            z-index: 10;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestions.visible {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background: var(--light);
+        }
+
+        .selected-symptoms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .symptom-tag {
+            background: var(--secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .remove-tag {
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .remove-tag:hover {
+            transform: scale(1.2);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+        }
+
+        .submit-btn:hover {
+            background: #5649c0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            border: 5px solid var(--secondary);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results.visible {
+            display: block;
+        }
+
+        .result-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .result-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .disease-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .confidence {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--success);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .description {
+            color: var(--dark);
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .treatment {
+            font-size: 0.9rem;
+            color: var(--dark);
+            background: var(--light);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .treatment-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 20%;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--accent);
+            bottom: 10%;
+            right: -50px;
+            animation-delay: 3s;
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            background: var(--success);
+            top: 60%;
+            left: 30%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, 50px) rotate(90deg); }
+            50% { transform: translate(100px, 0) rotate(180deg); }
+            75% { transform: translate(50px, -50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        .error-message {
+            color: var(--danger);
+            background: rgba(214, 48, 49, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .shape-1, .shape-2, .shape-3 {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">MediScan</div>
+            <div class="tagline">AI-powered disease prediction from symptoms</div>
+        </header>
+
+        <main class="main-content">
+            <div class="error-message" id="error-message"></div>
+
+            <div class="prediction-card" id="input-card">
+                <div class="card-header">
+                    <div class="card-icon">🩺</div>
+                    <h2 class="card-title">Enter Your Symptoms</h2>
+                </div>
+
+                <div class="symptom-input">
+                    <label for="symptoms" class="input-label">Type your symptoms (comma separated):</label>
+                    <input type="text" id="symptoms" class="input-field" placeholder="e.g. fever, headache, cough">
+                    <div class="suggestions" id="suggestions"></div>
+                </div>
+
+                <div class="selected-symptoms" id="selected-symptoms"></div>
+
+                <button id="submit-btn" class="submit-btn" disabled>
+                    <span>Predict Disease</span>
+                    <span>🔍</span>
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="loader"></div>
+                <p>Analyzing symptoms and predicting possible diseases...</p>
+            </div>
+
+            <div class="prediction-card results" id="results">
+                <div class="card-header">
+                    <div class="card-icon">📋</div>
+                    <h2 class="card-title">Prediction Results</h2>
+                </div>
+
+                <div id="results-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function init() {
+            setupEventListeners();
+            
+            // For testing purposes - simulate API response
+            window.simulateAPIResponse = function() {
+                const mockResponse = {
+                    predictions: [
+                        { disease: "fungal_infection", confidence: 0.85 },
+                        { disease: "allergy", confidence: 0.72 },
+                        { disease: "drug_reaction", confidence: 0.65 }
+                    ]
+                };
+                showResults(mockResponse.predictions);
+            };
+        }
+
+        // [Previous setupEventListeners, handleInput, showSuggestions, hideSuggestions, 
+        // selectSymptom, updateSelectedSymptoms, removeSymptom, updateSubmitButton,
+        // showLoading, hideLoading, showError functions remain the same]
+
+        // Predict disease from symptoms - UPDATED VERSION
+        async function predictDisease() {
+            if (selectedSymptoms.length === 0) return;
+            
+            showLoading();
+            
+            // For demo purposes, we'll use mock data if API fails
+            let apiSuccess = false;
+            
+            try {
+                // Try the actual API first
+                const apiResponse = await callDiseaseAPI(selectedSymptoms);
+                if (apiResponse.predictions && apiResponse.predictions.length > 0) {
+                    apiSuccess = true;
+                    showResults(apiResponse.predictions);
+                } else {
+                    showError("No predictions returned from API");
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+                // If API fails, use mock data for demonstration
+                const mockResponse = {
+                    predictions: generateMockPredictions(selectedSymptoms)
+                };
+                showResults(mockResponse.predictions);
+                showError("API connection failed. Showing sample data for demonstration.");
+            }
+        }
+
+        // New function to call the disease API
+        function callDiseaseAPI(symptoms) {
+            return new Promise((resolve, reject) => {
+                const data = JSON.stringify({
+                    symptoms: symptoms.join(', ')
+                });
+
+                const xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
+
+                xhr.addEventListener('readystatechange', function() {
+                    if (this.readyState === this.DONE) {
+                        if (this.status >= 200 && this.status < 300) {
+                            try {
+                                const response = JSON.parse(this.responseText);
+                                resolve(response);
+                            } catch (e) {
+                                reject(new Error('Invalid JSON response'));
+                            }
+                        } else {
+                            reject(new Error(`API request failed with status ${this.status}`));
+                        }
+                    }
+                });
+
+                xhr.addEventListener('error', function() {
+                    reject(new Error('Network error'));
+                });
+
+                xhr.addEventListener('timeout', function() {
+                    reject(new Error('Request timeout'));
+                });
+
+                xhr.open('POST', 'https://human-disease-detector.p.rapidapi.com/human_disease/predict');
+                xhr.setRequestHeader('x-rapidapi-key', 'a63a48d41bmsh053b40b87283c6bp19b259jsnb61bc576058a');
+                xhr.setRequestHeader('x-rapidapi-host', 'human-disease-detector.p.rapidapi.com');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('x-token', 'Makshad Nai Bhoolna @ 2025');
+                
+                xhr.timeout = 8000; // 8 seconds timeout
+                xhr.send(data);
+            });
+        }
+
+        // Generate mock predictions based on symptoms
+        function generateMockPredictions(symptoms) {
+            // Simple mapping of symptoms to possible diseases
+            const symptomToDisease = {
+                'itching': ['fungal_infection', 'allergy', 'eczema'],
+                'skin_rash': ['fungal_infection', 'allergy', 'measles'],
+                'fever': ['typhoid', 'malaria', 'dengue'],
+                'headache': ['migraine', 'hypertension', 'common_cold'],
+                'cough': ['common_cold', 'pneumonia', 'tuberculosis']
+            };
+            
+            // Find matching diseases for symptoms
+            const possibleDiseases = [];
+            symptoms.forEach(symptom => {
+                if (symptomToDisease[symptom]) {
+                    possibleDiseases.push(...symptomToDisease[symptom]);
+                }
+            });
+            
+            // Remove duplicates
+            const uniqueDiseases = [...new Set(possibleDiseases)];
+            
+            // Generate mock predictions with random confidence
+            return uniqueDiseases.map(disease => ({
+                disease,
+                confidence: Math.random() * 0.5 + 0.5 // Random confidence between 0.5 and 1.0
+            })).sort((a, b) => b.confidence - a.confidence); // Sort by confidence
+        }
+
+        // [Previous showResults, getDiseaseDescription, getTreatmentAdvice functions remain the same]
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

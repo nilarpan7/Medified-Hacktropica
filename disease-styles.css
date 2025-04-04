@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.input-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.symptoms-input {
+    margin-bottom: 1.5rem;
+}
+
+.symptoms-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.symptoms-input textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+    min-height: 100px;
+    font-size: 1rem;
+}
+
+.symptoms-input textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+#predict-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    font-weight: 500;
+}
+
+#predict-btn:hover {
+    background-color: #2980b9;
+}
+
+.result-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.result-section h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.results-container {
+    min-height: 100px;
+    padding: 1rem;
+    border: 1px dashed #ddd;
+    border-radius: 5px;
+}
+
+.placeholder {
+    color: #95a5a6;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.disease-result {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.disease-result h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.disease-result p {
+    color: #7f8c8d;
+}
+
+.loading {
+    text-align: center;
+    color: #3498db;
+}
+
+.error {
+    color: #e74c3c;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+}

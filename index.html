@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medified-AI - Medical Appointment System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><img class="logo-1" src="logo.png"></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="diagnosis.html">Diagnosis</a></li>
+                    <li><a href="disease-prediction.html">Disease Prediction</a></li>
+                    <li><a href="findDoctor.html">Find Nearby Doctor</a></li>
+                    <li><a href="#login-section" class="btn-primary">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Healthcare Made Simple</h1>
+                <p>Connecting patients with doctors for better healthcare experience</p>
+                <div class="hero-buttons">
+                    <a href="#login-section" class="btn-primary">Get Started</a>
+                    <a href="#features" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="assets/img/olga-guryanova-tMFeatBSS4s-unsplash.jpg" alt="Healthcare Illustration" >
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose MEDIFIED-AI?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Expert Doctors</h3>
+                    <p>Connect with experienced healthcare professionals who care about your wellbeing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Easy Appointments</h3>
+                    <p>Book appointments with just a few clicks, anytime and anywhere.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Save Time</h3>
+                    <p>No more waiting in queues. Manage your healthcare efficiently.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Your health information is always secure and confidential with us.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About MEDIFIED-AI</h2>
+                    <p>MedConnect is a modern healthcare platform designed to bridge the gap between patients and healthcare providers. We aim to make healthcare more accessible, efficient, and personalized for everyone.</p>
+                    <p>Our team of experienced healthcare professionals and tech experts work together to provide a seamless experience for both patients and doctors.</p>
+                    <a href="#login-section" class="btn-primary">Join Us Today</a>
+                </div>
+                <div class="about-image">
+                    <img src="assets/img/about-image.png" alt="About MedConnect" onerror="this.src='https://via.placeholder.com/500x400?text=About+MedConnect'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="diagnosis" class="diagnosis-section">
+        <div class="container">
+            <h2 class="section-title">Get Diagnosis Recommendations</h2>
+            <div class="diagnosis-content">
+                <div class="diagnosis-text">
+                    <p>Feeling unwell but not sure what's wrong? Our AI-powered diagnosis recommendation system can help you understand your symptoms and suggest possible conditions.</p>
+                    <p>Simply describe your symptoms, and our system will analyze them to provide you with potential diagnoses and next steps.</p>
+                    <div class="diagnosis-actions">
+                        <a href="diagnosis.html" class="btn-primary">Get Started</a>
+                        <a href="#features" class="btn-secondary">Learn More</a>
+                    </div>
+                </div>
+                <div class="diagnosis-image">
+                    <img src="assets/img/diagnosis-image.png" alt="Diagnosis Recommendation" onerror="this.src='https://via.placeholder.com/500x400?text=Diagnosis+Recommendation'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="prediction" class="prediction-section">
+        <div class="container">
+            <h2 class="section-title">Disease Prediction</h2>
+            <div class="prediction-content">
+                <div class="prediction-text">
+                    <p>Prevention is better than cure. Our disease prediction tool helps you assess your risk for various common diseases based on your health parameters and lifestyle factors.</p>
+                    <p>Enter your health information, and our prediction model will evaluate your risk levels and provide personalized prevention recommendations.</p>
+                    <div class="prediction-actions">
+                        <a href="disease-prediction.html" class="btn-primary">Check Your Risk</a>
+                        <a href="#features" class="btn-secondary">How It Works</a>
+                    </div>
+                </div>
+                <div class="prediction-image">
+                    <img src="assets/img/prediction-image.png" alt="Disease Prediction" onerror="this.src='https://via.placeholder.com/500x400?text=Disease+Prediction'"">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="login-section" class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="login" class="auth-form active">
+                    <h2>Welcome Back</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Login as:</label>
+                            <div class="user-type-selection">
+                                <div class="user-type-option" data-type="patient">
+                                    <input type="radio" name="loginUserType" id="loginPatientType" value="patient" checked>
+                                    <label for="loginPatientType" class="user-type-card">
+                                        <div class="user-type-icon"><i class="fas fa-user"></i></div>
+                                        <h3>Patient</h3>
+                                        <p>Access your appointments</p>
+                                    </label>
+                                </div>
+                                <div class="user-type-option" data-type="doctor">
+                                    <input type="radio" name="loginUserType" id="loginDoctorType" value="doctor">
+                                    <label for="loginDoctorType" class="user-type-card">
+                                        <div class="user-type-icon"><i class="fas fa-user-md"></i></div>
+                                        <h3>Doctor</h3>
+                                        <p>Manage your patients</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-primary">Login</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Register Form -->
+                <div id="register" class="auth-form">
+                    <h2>Create Account</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="registerName">Full Name</label>
+                            <input type="text" id="registerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Password</label>
+                            <input type="password" id="registerPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Register as:</label>
+                            <div class="user-type-selection">
+                                <div class="user-type-option" data-type="patient">
+                                    <input type="radio" name="userType" id="patientType" value="patient" checked>
+                                    <label for="patientType" class="user-type-card">
+                                        <div class="user-type-icon"><i class="fas fa-user"></i></div>
+                                        <h3>Patient</h3>
+                                        <p>Find doctors and book appointments</p>
+                                    </label>
+                                </div>
+                                <div class="user-type-option" data-type="doctor">
+                                    <input type="radio" name="userType" id="doctorType" value="doctor">
+                                    <label for="doctorType" class="user-type-card">
+                                        <div class="user-type-icon"><i class="fas fa-user-md"></i></div>
+                                        <h3>Doctor</h3>
+                                        <p>Manage patients and appointments</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Doctor-specific fields (hidden by default) -->
+                        <div id="doctorFields" style="display: none;">
+                            <div class="form-group">
+                                <label for="experience">Years of Experience</label>
+                                <input type="number" id="experience" min="0" max="70">
+                            </div>
+                            <div class="form-group">
+                                <label for="license">License Number</label>
+                                <input type="text" id="license">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn-primary">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <a href="index.html"><img class="logo-1" src="logo.png"></a>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#login-section">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> info@medified.ai.com</p>
+                    <p><i class="fas fa-phone"></i> +919564****77</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MEDIFIED-AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="zGJ8FiJ9YLdxPSoHXUqKs";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+        </script>
+   
+   <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+   <script src="https://files.bpcontent.cloud/2025/03/29/17/20250329173911-SFFEPCAS.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
