@@ -24,14 +24,50 @@
       padding: 0;
       box-sizing: border-box;
     }
+    .heading h2{
+      font-size: 3rem;
+    }
+    @keyframes pulse-text {
+    0% {
+        text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+        transform: scale(1);
+    }
+    100% {
+        text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+        transform: scale(1.02);
+    }
+}
+.heading h2  {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: rgb(255, 255, 255);
+    animation: pulse-text 2s infinite alternate;
+}
+    header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background: black;
       min-height: 100vh;
       color: var(--dark);
       overflow-x: hidden;
-      padding: 20px;
+      /* padding: 20px; */
     }
 
     .container-1 {
@@ -55,7 +91,8 @@
         }
     .container {
       max-width: 600px;
-      margin: 20vh auto;
+      
+      margin: 10vh auto;
       background: white;
       padding: 30px;
       border-radius: 20px;
@@ -95,7 +132,7 @@
       transform: translateX(-50%);
       width: 60px;
       height: 4px;
-      background: var(--accent);
+      background: black;
       border-radius: 2px;
       animation: scaleIn 0.8s ease-out 0.3s both;
     }
@@ -417,9 +454,10 @@
     <div class="shape shape-2"></div>
     <div class="shape shape-3"></div>
   </div>
+  <div class="heading"> <h2>Diagonsis</h2></div>
 
   <div class="container">
-    <h2>Diagonsis</h2>
+   
     
     <div class="patient-info">
       <h3><i class="fas fa-user-circle"></i> Patient Information</h3>
