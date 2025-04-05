@@ -27,38 +27,12 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: black;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             color: var(--dark);
             overflow-x: hidden;
-            
         }
-        @keyframes pulse-text {
-    0% {
-        text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
-        transform: scale(1);
-    }
-    100% {
-        text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
-        transform: scale(1.02);
-    }
-}
-.heading h3  {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    color: rgb(255, 255, 255);
-    animation: pulse-text 2s infinite alternate;
-}
-        .heading h3 {
-                text-align: center;
-                font-size: 3rem;
-            }
-    .heading p{
-        font-size: 3 rem;
-    text-align: center;
-    color: #f5f6fa;
-    
-}
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -631,8 +605,6 @@
             .shape-1, .shape-2, .shape-3 {
                 display: none;
             }
-
-            
         }
     </style>
 </head>
@@ -655,11 +627,6 @@
             </nav>
         </div>
     </header>
-
-    <div class="heading"><h3>Find Doctors Nearby</h3>
-                        <p>Your Health, Just Minutes Away</p>
-    
-    </div>
 
     <div class="floating-shapes">
         <div class="shape shape-1"></div>
@@ -967,6 +934,7 @@
                 rating: 4.7,
                 image: "https://randomuser.me/api/portraits/men/82.jpg"
             },
+            // New doctors from Asansol/Paschim Bardhaman
             {
                 id: 19,
                 name: "Dr. Amitava Chatterjee",
