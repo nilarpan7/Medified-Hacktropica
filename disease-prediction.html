@@ -163,12 +163,13 @@
             }
         }
 
-        .header {
+        .heading {
             padding: 25px;
             text-align: center;
-            background: linear-gradient(135deg, var(--dark), var(--lighter));
-            border-bottom: 1px solid var(--lighter);
-            position: relative;
+            font-size: 2rem;
+            /*background: linear-gradient(135deg, var(--dark), var(--lighter));*/
+            /*border-bottom: 1px solid var(--lighter);*/
+            /*position: relative;*/
             overflow: hidden;
         }
 
@@ -193,7 +194,7 @@
             }
         }
 
-        .header h2 {
+        .heading h2 {
             font-size: 2rem;
             margin-bottom: 10px;
             color: white;
@@ -540,15 +541,16 @@
         </div>
     </header>
 
-    <div class="floating-particles" id="particles-container"></div>
+    
+    <div class="heading">
+        <i class="fas fa-microscope microscope-icon"></i>
+        <h2><i class="fas fa-heartbeat"></i> Disease Predictor</h2>
+        <p>AI-powered health analysis</p>
+    </div>
     
     <div class="container">
         <div class="pulse-circle"></div>
-        <div class="header">
-            <i class="fas fa-microscope microscope-icon"></i>
-            <h2><i class="fas fa-heartbeat"></i> Disease Predictor</h2>
-            <p>AI-powered health analysis</p>
-        </div>
+        
         
         <div class="content">
             <input type="text" id="symptomsInput" placeholder="Enter symptoms (e.g., itching, skin_rash)" />
