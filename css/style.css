@@ -20,7 +20,7 @@
 body {
     font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: var(--text-color);
+    color: white;
     background: #00C9FF;  /* fallback for old browsers */
     background: black;  /* Chrome 10-25, Safari 5.1-6 */
     background: black;/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -64,13 +64,14 @@ ul {
 
 .btn-primary {
     background-color: rgb(60, 12, 72);
-    color: var(--light-color);
+    color: white;
     border: none;
     
 }
 
 .btn-primary:hover {
     background-color: #1abcb4;
+    color:black;
     transform: translateY(-2px);
 }
 
@@ -218,7 +219,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .feature-card {
-    background-color: rgb(6, 39, 89);
+    background-color: rgb(89, 140, 217);
     padding: 30px;
     border-radius: 10px;
     box-shadow: var(--shadow);
@@ -227,23 +228,25 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .feature-card:hover {
+    background-color: #00C9FF;
     transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px rgba(28, 27, 27, 0.1);
+
 }
 
 .feature-icon {
     font-size: 2.5rem;
-    color: var(--primary-color);
+    color: white;
     margin-bottom: 20px;
 }
 
 .feature-card h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
-    color: skyblue;
+    color: rgb(255, 255, 255);
 }
 .feature-card p{
-    color:skyblue;
+    color:rgb(253, 253, 253);
 }
 
 /* About Section */
@@ -265,14 +268,14 @@ nav ul li a:hover, nav ul li a.active {
 
 .about-text h2 {
     margin-bottom: 20px;
-    color: var(--dark-color);
+    color: white;
     font-size: 2.2rem;
 }
 
 .about-text p {
     margin-bottom: 15px;
     line-height: 1.6;
-    color: #666;
+    color: white;
 }
 
 .about-image {
@@ -305,7 +308,7 @@ nav ul li a:hover, nav ul li a.active {
 .diagnosis-text p {
     margin-bottom: 15px;
     line-height: 1.6;
-    color: #666;
+    color: white;
 }
 
 .diagnosis-actions {
@@ -345,7 +348,7 @@ nav ul li a:hover, nav ul li a.active {
 .prediction-text p {
     margin-bottom: 15px;
     line-height: 1.6;
-    color: #666;
+    color: white;
 }
 
 .prediction-actions {
@@ -573,8 +576,8 @@ nav ul li a:hover, nav ul li a.active {
 .auth-container {
     max-width: 500px;
     margin: 0 auto;
-    background: #343a40 ;
-    box-shadow: 0px 3px 3px 3px rgb(127, 124, 124); /* Chrome 10-25, Safari 5.1-6 */
+    background: #338391 ;
+    box-shadow: 0px 3px 3px 3px rgb(65, 63, 63); /* Chrome 10-25, Safari 5.1-6 */
     border-radius: 10px;
     overflow: hidden;
 }
@@ -596,9 +599,9 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .auth-tab.active {
-    background: #676c70;
-    color: white;
-    border-bottom: 3px solid var(--primary-color);
+    background: #11c6de;
+    color: rgb(238, 238, 238);
+    border-bottom: 3px solid black;
 }
 
 .auth-form {
@@ -612,7 +615,7 @@ nav ul li a:hover, nav ul li a.active {
 
 .auth-form h2 {
     margin-bottom: 25px;
-    color: white;
+    color: rgb(255, 255, 255);
     text-align: center;
 }
 
@@ -639,7 +642,7 @@ nav ul li a:hover, nav ul li a.active {
 .form-group input:focus, .form-group select:focus {
     border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(242, 240, 240, 0.2);
+    box-shadow: 0 0 0 2px rgba(231, 222, 222, 0.2);
 }
 
 .radio-group {
@@ -698,7 +701,7 @@ nav ul li a:hover, nav ul li a.active {
 
 .user-type-option input[type="radio"]:checked + .user-type-card,
 .user-type-option.selected .user-type-card {
-    border-color: #4a80f5;
+    border-color: #000000;
     background-color: #eef2ff;
     box-shadow: 0 4px 12px rgba(74, 128, 245, 0.2);
 }
