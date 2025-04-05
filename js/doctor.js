@@ -157,6 +157,14 @@ document.addEventListener('DOMContentLoaded', function() {
         updateActiveMenuItem(this);
     });
     
+    document.getElementById('prescriptions-link')?.addEventListener('click', function() {
+        // Navigate to prescription page
+        window.location.href = 'prescription.html';
+        
+        // Update active menu item
+        updateActiveMenuItem(this);
+    });
+    
     
     // Functions
     function initializePage() {
