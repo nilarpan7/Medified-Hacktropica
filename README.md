@@ -7,7 +7,7 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-%23E35D6A)
 
 <div align="center">
-  <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTRvN2ZoNWlqM2VtOG5vYmNxZ3Y3amVtcjFhMTJxemlsNGZhemNyZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f7YCJwa0XZbLvW3gav/giphy.gif" width="300" alt="medified-demo">
+  <img src="[https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTRvN2ZoNWlqM2VtOG5vYmNxZ3Y3amVtcjFhMTJxemlsNGZhemNyZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f7YCJwa0XZbLvW3gav/giphy.gif](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTRvN2ZoNWlqM2VtOG5vYmNxZ3Y3amVtcjFhMTJxemlsNGZhemNyZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f7YCJwa0XZbLvW3gav/giphy.gif)" width="300" alt="medified-demo">
 </div>
 
 ## 🌟 Key Features
