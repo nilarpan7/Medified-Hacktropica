@@ -219,9 +219,10 @@ nav ul li a:hover, nav ul li a.active {
 
 
 .hero-image img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
+    
+    height:50vw ;
+    margin-top: 40px;
+    border-radius: 20px;
     box-shadow: var(--shadow);
 }
 
