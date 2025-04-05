@@ -1,6 +1,6 @@
 :root {
     --primary-color: #4285f4;
-    --secondary-color: #34a853;
+    --secondary-color: #ffffff;
     --accent-color: #ea4335;
     --light-gray: #f5f5f5;
     --dark-gray: #333;
@@ -19,9 +19,9 @@ body {
     background-color: #f9f9f9;
     color: var(--dark-gray);
     line-height: 1.6;
-    background: #00C9FF;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right,#CAF0F8,#ADE8F4,#48CAE4,#00B4D8,#0096C7,#0077B6,#023E8A);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #CAF0F8,#ADE8F4,#48CAE4,#00B4D8,#0096C7,#0077B6,#023E8A);
+    background: #000000;  /* fallback for old browsers */
+    background: black;  /* Chrome 10-25, Safari 5.1-6 */
+    
 }
 
 .container1 {
@@ -86,9 +86,8 @@ header {
     left: 0;
     right: 0;
     z-index: 100;
-    background: #00C9FF;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right,#CAF0F8,#ADE8F4,#48CAE4,#00B4D8,#0096C7,#0077B6,#023E8A);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #CAF0F8,#ADE8F4,#48CAE4,#00B4D8,#0096C7,#0077B6,#023E8A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: rgb(104,102,102);  /* fallback for old browsers */
+     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     box-shadow: 5px 0px 5px rgb(103, 103, 103);
 }
 
@@ -143,28 +142,52 @@ nav ul li a:hover, nav ul li a.active {
     margin: 0 auto;
     padding: 2rem;
 }
+@keyframes pulse-text {
+    0% {
+        text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+        transform: scale(1);
+    }
+    100% {
+        text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+        transform: scale(1.02);
+    }
+}
+.container2 h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    color: rgb(255, 255, 255);
+    animation: pulse-text 2s infinite alternate;
+}
+
+
+
+.container p {
+    color: rgb(255, 255, 255);
+    animation: fade-in 1s ease-out;
+    margin-bottom: 15px;
+}
 
 h1, h2 {
-    color: black;
+    color: rgb(231, 231, 231);
     margin-bottom: 2rem;
 }
 
 h1 {
-    font-size: 2.3rem;
+    font-size: 3rem;
     text-align: center;
 }
 
 p {
     margin-bottom: 2rem;
     text-align: center;
-    color: var(--medium-gray);
+    color: white;
 }
 
 .search-container {
-    background: white;
+    background: rgb(104, 102, 102);
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 30px rgba(234, 231, 231, 0.5);
     margin-bottom: 2rem;
 }
 
@@ -199,7 +222,7 @@ input[type="text"]:focus, select:focus {
 }
 
 #current-location-btn {
-    background: var(--primary-color);
+    background: var(--dark-gray);
     color: white;
     border: none;
     border-radius: 4px;
@@ -209,13 +232,13 @@ input[type="text"]:focus, select:focus {
 }
 
 #current-location-btn:hover {
-    background: #3367d6;
+    background: #535455;
 }
 
 #search-btn {
     width: 100%;
     padding: 1rem;
-    background: var(--primary-color);
+    background: var(--dark-gray);
     color: white;
     border: none;
     border-radius: 4px;
@@ -226,7 +249,7 @@ input[type="text"]:focus, select:focus {
 }
 
 #search-btn:hover {
-    background: #3367d6;
+    background: #000000;
 }
 
 .loading {
@@ -252,7 +275,7 @@ input[type="text"]:focus, select:focus {
 
 .results-container {
     display: none;
-    background: white;
+    background: rgb(103, 98, 98);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: var(--shadow);
@@ -266,10 +289,12 @@ input[type="text"]:focus, select:focus {
 }
 
 .doctor-card {
+    background-color: rgb(56, 51, 51);
     border: 1px solid #eee;
     border-radius: 8px;
     padding: 1.5rem;
     transition: transform 0.3s, box-shadow 0.3s;
+    
 }
 
 .doctor-card:hover {
@@ -280,19 +305,19 @@ input[type="text"]:focus, select:focus {
 .doctor-name {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: white;
     margin-bottom: 0.5rem;
 }
 
 .doctor-specialty {
-    color: var(--secondary-color);
+    color: white;
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
 
 .doctor-address, .doctor-phone {
     margin-bottom: 0.5rem;
-    color: var(--medium-gray);
+    color: var(--light-gray);
 }
 
 .doctor-distance {
@@ -324,12 +349,12 @@ input[type="text"]:focus, select:focus {
 }
 
 .book-btn {
-    background: var(--primary-color);
+    background: black;
     color: white;
 }
 
 .directions-btn {
-    background: var(--secondary-color);
+    background: black;;
     color: white;
 }
 
