@@ -46,7 +46,7 @@ Secure patient medical records
 
 1. Clone repository
 ```bash
-git clone https://github.com/yourusername/medified.git
+git clone https://github.com/nilarpan7/medified.git
 ```
 2. Launch application
 Open index.html in modern browser
