@@ -17,6 +17,24 @@
     box-sizing: border-box;
 }
 
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 body {
     font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -1430,7 +1448,6 @@ footer {
     background-color: var(--dark-color);
     color: var(--light-color);
     padding: 60px 0 20px;
-    border-radius: 20px;
 }
 
 .footer-content {
