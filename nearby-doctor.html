@@ -6,6 +6,7 @@
     <title>MediFind - Doctor Search</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         :root {
             --primary: #6c5ce7;
@@ -65,18 +66,6 @@
             position: relative;
         }
 
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 2px;
-            animation: scaleIn 0.8s ease-out;
-        }
 
         @keyframes scaleIn {
             from {
@@ -287,6 +276,17 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .container-1 {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px;
         }
 
         .doctor-card:hover {
@@ -609,6 +609,25 @@
     </style>
 </head>
 <body>
+    <header>
+        <div class="container-1">
+            <div class="logo">
+                <a href="index.html"><img class="logo-1" src="logo.png"></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="diagnosis.html">Diagnosis</a></li>
+                    <li><a href="disease-prediction.html">Disease Prediction</a></li>
+                    <li><a href="nearby-doctor.html">Find Nearby Doctor</a></li>
+                    <li><a href="#login-section" class="btn-primary">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
     <div class="floating-shapes">
         <div class="shape shape-1"></div>
         <div class="shape shape-2"></div>
@@ -621,10 +640,6 @@
             <div class="error-message" id="error-message"></div>
 
             <div class="search-card">
-                <div class="card-header">
-                    <div class="card-icon">👨‍⚕️</div>
-                    <h2 class="card-title">Find Doctors Nearby</h2>
-                </div>
 
                 <div class="search-input">
                     <label for="condition" class="input-label">Medical Condition:</label>
@@ -691,6 +706,33 @@
         </div>
     </div>
 
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <a href="index.html"><img class="logo-1" src="logo.png"></a>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#login-section">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> info@medified.ai.com</p>
+                    <p><i class="fas fa-phone"></i> +919564****77</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MEDIFIED-AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
     <script>
         // Sample doctor data
         const sampleDoctors = [

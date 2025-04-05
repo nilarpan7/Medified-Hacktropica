@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEDIFIED</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --secondary: #a29bfe;
+      --accent: #fd79a8;
+      --dark: #2d3436;
+      --light: #f5f6fa;
+      --success: #00b894;
+      --warning: #fdcb6e;
+      --danger: #d63031;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      color: var(--dark);
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    .container-1 {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px;
+        }
+
+        .container-2 {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            align-items: center;
+            padding: 9px;
+        }
+    .container {
+      max-width: 600px;
+      margin: 20vh auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      transform: translateY(0);
+      opacity: 1;
+      transition: all 0.4s ease;
+      animation: fadeInUp 0.8s ease-out;
+      align-items: center;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      text-align: center;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: scaleIn 0.8s ease-out 0.3s both;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: translateX(-50%) scaleX(0);
+      }
+      to {
+        transform: translateX(-50%) scaleX(1);
+      }
+    }
+
+    .patient-info {
+      background: rgba(108, 92, 231, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(108, 92, 231, 0.1);
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .patient-info h3 {
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .patient-info h3 i {
+      font-size: 1rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .info-field {
+      margin-bottom: 8px;
+    }
+
+    .info-field label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--dark);
+      opacity: 0.7;
+      margin-bottom: 3px;
+    }
+
+    .info-field input, .info-field select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #dfe6e9;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      margin: 15px 0;
+      font-size: 16px;
+      border: 2px solid #dfe6e9;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover {
+      background: #5649c0;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+    }
+
+    button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.3));
+      transform: translateX(-100%);
+      transition: transform 0.4s ease-out;
+    }
+
+    button:hover::after {
+      transform: translateX(100%);
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      background: rgba(144, 238, 144, 0.15);
+      border: 1px solid var(--success);
+      border-radius: 12px;
+      display: none;
+      word-break: break-word;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    .field {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #e0e0e0;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .field:last-child {
+      border-bottom: none;
+    }
+
+    .field strong {
+      color: var(--success);
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      text-transform: capitalize;
+    }
+
+    .field span {
+      color: var(--dark);
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .loader {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 15px;
+      border: 5px solid var(--secondary);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error-message {
+      color: var(--danger);
+      background: rgba(214, 48, 49, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      display: none;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      20%, 60% {
+        transform: translateX(-5px);
+      }
+      40%, 80% {
+        transform: translateX(5px);
+      }
+    }
+
+    .floating-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      background: var(--primary);
+      top: 20%;
+      left: -100px;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 200px;
+      height: 200px;
+      background: var(--accent);
+      bottom: 10%;
+      right: -50px;
+      animation-delay: 3s;
+    }
+
+    .shape-3 {
+      width: 150px;
+      height: 150px;
+      background: var(--success);
+      top: 60%;
+      left: 30%;
+      animation-delay: 6s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        transform: translate(50px, 50px) rotate(90deg);
+      }
+      50% {
+        transform: translate(100px, 0) rotate(180deg);
+      }
+      75% {
+        transform: translate(50px, -50px) rotate(270deg);
+      }
+      100% {
+        transform: translate(0, 0) rotate(360deg);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 20px auto;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .shape-1, .shape-2, .shape-3 {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container-1">
+        <div class="logo">
+            <a href="index.html"><img class="logo-1" src="logo.png"></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="diagnosis.html">Diagnosis</a></li>
+                <li><a href="disease-prediction.html">Disease Prediction</a></li>
+                <li><a href="nearby-doctor.html">Find Nearby Doctor</a></li>
+                <li><a href="#login-section" class="btn-primary">Login</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <div class="container">
+    <h2>Diagonsis</h2>
+    
+    <div class="patient-info">
+      <h3><i class="fas fa-user-circle"></i> Patient Information</h3>
+      <div class="info-grid">
+        <div class="info-field">
+          <label for="patientName">Full Name</label>
+          <input type="text" id="patientName" placeholder="John Doe">
+        </div>
+        <div class="info-field">
+          <label for="patientAge">Age</label>
+          <input type="number" id="patientAge" placeholder="30">
+        </div>
+        <div class="info-field">
+          <label for="patientGender">Gender</label>
+          <select id="patientGender">
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <input type="text" id="drugInput" placeholder="Enter drug name (e.g., dextromethorphan)" />
+    <button onclick="getDrugInfo()">
+      <i class="fas fa-search"></i> Get Drug Info
+    </button>
+    
+    <div class="loading" id="loading">
+      <div class="loader"></div>
+      <p>Searching for drug information...</p>
+    </div>
+    
+    <div class="error-message" id="error-message"></div>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <footer>
+    <div class="container-2">
+        <div class="footer-content">
+            <div class="logo">
+                <a href="index.html"><img class="logo-1" src="logo.png"></a>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#login-section">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> info@medified.ai.com</p>
+                <p><i class="fas fa-phone"></i> +919564****77</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MEDIFIED-AI. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+  <script>
+    async function getDrugInfo() {
+      const drugName = document.getElementById('drugInput').value.trim();
+      if (!drugName) {
+        showError("Please enter a drug name.");
+        return;
+      }
+
+      // Show loading and hide previous results/errors
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('result').style.display = 'none';
+      document.getElementById('error-message').style.display = 'none';
+
+      const url = `https://drug-info-and-price-history.p.rapidapi.com/1/druginfo?drug=${encodeURIComponent(drugName)}`;
+      const options = {
+        method: 'GET',
+        headers: {
+          'x-rapidapi-key': 'cf2ddb8c00msh697a715556d5e9fp1255c4jsnbac3068a0ca9',
+          'x-rapidapi-host': 'drug-info-and-price-history.p.rapidapi.com'
+        }
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+
+        // Hide loading
+        document.getElementById('loading').style.display = 'none';
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+
+        if (data && data.length > 0) {
+          const drug = data[0];
+
+          // Format dates if they exist
+          const formatDate = (dateString) => {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return isNaN(date.getTime()) ? dateString : date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+          };
+
+          let output = `<h3>Drug Details</h3>`;
+          
+          // Add patient info section
+          const patientName = document.getElementById('patientName').value || 'Not specified';
+          const patientAge = document.getElementById('patientAge').value || 'Not specified';
+          const patientGender = document.getElementById('patientGender').value || 'Not specified';
+          
+          output += `
+            <div class="field">
+              <strong>Prescribe to:</strong>
+              <span>${patientName}, ${patientAge} years (${patientGender})</span>
+            </div>
+          `;
+          
+          // Add drug information
+          for (const [key, value] of Object.entries(drug)) {
+            let displayValue = value !== null ? value : 'N/A';
+            
+            // Special formatting for date fields
+            if (key.toLowerCase().includes('date') || key.toLowerCase().includes('expir')) {
+              displayValue = formatDate(value);
+            }
+            
+            output += `
+              <div class="field">
+                <strong>${key.replace(/_/g, ' ')}:</strong>
+                <span>${displayValue}</span>
+              </div>
+            `;
+          }
+
+          resultDiv.innerHTML = output;
+        } else {
+          resultDiv.innerHTML = "<p style='text-align:center;'>No information found for the entered drug.</p>";
+        }
+      } catch (error) {
+        console.error(error);
+        document.getElementById('loading').style.display = 'none';
+        showError("Failed to fetch drug information. Please try again.");
+      }
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('error-message');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    // Allow search on Enter key
+    document.getElementById('drugInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        getDrugInfo();
+      }
+    });
+  </script>
+</body>
+</html>

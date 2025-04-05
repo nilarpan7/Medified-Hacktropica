@@ -35,7 +35,7 @@
         body {
             background-color: var(--darker);
             color: var(--text);
-            display: flex;
+            /* display: flex; */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -86,7 +86,13 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px;
         }
+
+        
         .container {
             background-color: var(--dark);
             border-radius: 15px;
@@ -97,6 +103,7 @@
             border: 1px solid var(--lighter);
             position: relative;
             z-index: 1;
+            margin:25vh auto;
             transform-style: preserve-3d;
             animation: fadeInUp 0.8s ease-out;
         }
@@ -503,12 +510,12 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="index.html" class="active">Home</a></li>
                     <li><a href="#features">Features</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="diagnosis.html">Diagnosis</a></li>
                     <li><a href="disease-prediction.html">Disease Prediction</a></li>
-                    <li><a href="findDoctor.html">Find Nearby Doctor</a></li>
+                    <li><a href="nearby-doctor.html">Find Nearby Doctor</a></li>
                     <li><a href="#login-section" class="btn-primary">Login</a></li>
                 </ul>
             </nav>
@@ -558,6 +565,32 @@
         </div>
     </div>
 
+    <footer>
+        <div class="container-2">
+            <div class="footer-content">
+                <div class="logo">
+                    <a href="index.html"><img class="logo-1" src="logo.png"></a>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#login-section">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> info@medified.ai.com</p>
+                    <p><i class="fas fa-phone"></i> +919564****77</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MEDIFIED-AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
     <script>
     // Create floating particles
     function createParticles() {
